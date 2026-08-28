@@ -2,11 +2,11 @@
 
 import { useRef, useState, type FormEvent } from 'react'
 import Image from 'next/image'
-import { ArrowUpRight, Check, Copy } from 'lucide-react'
+import { ArrowUpRight, Check, Copy, LoaderCircle } from 'lucide-react'
 import { Reveal, RevealWords } from '@/components/reveal'
+import { CONTACT_LIMITS, mailtoFor, parseContactPayload } from '@/lib/contact'
+import { SITE } from '@/lib/site'
 import { cn } from '@/lib/utils'
-
-const EMAIL = 'hello@yasinmalak.dev'
 
 const availability = [
   { k: 'Time zone', v: 'UTC+5 — overlaps EU all day, US mornings' },
@@ -14,6 +14,9 @@ const availability = [
   { k: 'Engagements', v: 'Project, retainer or hourly contract' },
   { k: 'Best fit', v: 'React Native apps, React dashboards, API integration' },
 ]
+
+type FieldErrors = Partial<Record<'name' | 'email' | 'brief', string>>
+type Status = 'idle' | 'submitting' | 'success' | 'error'
 
 /** Button that leans toward the cursor, then springs back on exit. */
 function MagneticLink({
@@ -57,24 +60,241 @@ function MagneticLink({
   )
 }
 
-export function Contact() {
-  const [copied, setCopied] = useState(false)
-  const [sent, setSent] = useState(false)
+function ContactForm() {
+  const [status, setStatus] = useState<Status>('idle')
+  const [fields, setFields] = useState<FieldErrors>({})
+  const [message, setMessage] = useState('')
+  const [mailto, setMailto] = useState<string | null>(null)
 
-  const copy = async () => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (status === 'submitting') return
+
+    const form = e.currentTarget
+    const data = new FormData(form)
+    const name = String(data.get('name') ?? '')
+    const email = String(data.get('email') ?? '')
+    const brief = String(data.get('brief') ?? '')
+    const company = String(data.get('company') ?? '')
+
+    const parsed = parseContactPayload({ name, email, brief, company })
+    if (!parsed.ok) {
+      setFields(parsed.fields)
+      setStatus('error')
+      setMessage('Please check the highlighted fields.')
+      return
+    }
+
+    setStatus('submitting')
+    setFields({})
+    setMessage('')
+    setMailto(null)
+
     try {
-      await navigator.clipboard.writeText(EMAIL)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ name, email, brief, company }),
+      })
+      const json = (await res.json().catch(() => ({}))) as {
+        ok?: boolean
+        error?: string
+        fields?: FieldErrors
+        code?: string
+        mailto?: string
+      }
+
+      if (res.ok && json.code !== 'not_configured') {
+        setStatus('success')
+        form.reset()
+        return
+      }
+
+      if (json.fields) setFields(json.fields)
+
+      if (json.code === 'not_configured') {
+        const fallback = json.mailto || mailtoFor({ name, email, brief })
+        setMailto(fallback)
+        setStatus('error')
+        setMessage('The inbox connection is not live yet — send this from your email app instead.')
+        return
+      }
+
+      setStatus('error')
+      setMessage(json.error || 'Could not send that just now. Please email me directly.')
     } catch {
-      setCopied(false)
+      const fallback = mailtoFor({ name, email, brief })
+      setMailto(fallback)
+      setStatus('error')
+      setMessage('Network hiccup — you can send the same note from your email app.')
     }
   }
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setSent(true)
-    setTimeout(() => setSent(false), 4000)
+  if (status === 'success') {
+    return (
+      <div className="flex flex-col gap-5 rounded-sm border border-primary/30 bg-card/40 p-6 sm:p-8">
+        <span className="flex size-10 items-center justify-center rounded-full border border-primary/40 text-primary">
+          <Check className="size-5" />
+        </span>
+        <div className="flex flex-col gap-2">
+          <p className="font-serif text-2xl tracking-tight">Message received.</p>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            I will read it personally and reply within 24 hours — usually sooner.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setStatus('idle')}
+          className="self-start text-sm text-primary transition-colors hover:text-foreground"
+        >
+          Send another
+        </button>
+      </div>
+    )
+  }
+
+  const busy = status === 'submitting'
+
+  return (
+    <form onSubmit={onSubmit} noValidate className="relative flex flex-col gap-5 rounded-sm border border-border bg-card/40 p-6 sm:p-8">
+      <div className="pointer-events-none absolute -left-[9999px] h-px w-px overflow-hidden opacity-0" aria-hidden="true">
+        <label htmlFor="company">Company</label>
+        <input id="company" name="company" tabIndex={-1} autoComplete="off" />
+      </div>
+
+      <Field id="name" label="Name" error={fields.name}>
+        <input
+          id="name"
+          name="name"
+          required
+          autoComplete="name"
+          maxLength={CONTACT_LIMITS.name.max}
+          placeholder="Your name"
+          disabled={busy}
+          aria-invalid={fields.name ? true : undefined}
+          aria-describedby={fields.name ? 'name-error' : undefined}
+          className={inputClass(fields.name)}
+        />
+      </Field>
+
+      <Field id="email" label="Email" error={fields.email}>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          autoComplete="email"
+          maxLength={CONTACT_LIMITS.email.max}
+          placeholder="you@company.com"
+          disabled={busy}
+          aria-invalid={fields.email ? true : undefined}
+          aria-describedby={fields.email ? 'email-error' : undefined}
+          className={inputClass(fields.email)}
+        />
+      </Field>
+
+      <Field id="brief" label="What are you building?" error={fields.brief}>
+        <textarea
+          id="brief"
+          name="brief"
+          required
+          rows={4}
+          maxLength={CONTACT_LIMITS.brief.max}
+          placeholder="Platform, timeline, and what needs to exist by the end of it."
+          disabled={busy}
+          aria-invalid={fields.brief ? true : undefined}
+          aria-describedby={fields.brief ? 'brief-error' : undefined}
+          className={cn(inputClass(fields.brief), 'resize-none leading-relaxed')}
+        />
+      </Field>
+
+      <button
+        type="submit"
+        disabled={busy}
+        data-cursor={busy ? 'Sending' : 'Send'}
+        className="group relative mt-1 overflow-hidden rounded-sm border border-primary/50 px-6 py-3.5 text-sm font-medium text-primary disabled:cursor-not-allowed disabled:opacity-70"
+      >
+        <span className="absolute inset-0 origin-bottom scale-y-0 bg-primary transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-y-100 group-disabled:scale-y-0" />
+        <span className="relative flex items-center justify-center gap-2 transition-colors duration-500 group-hover:text-primary-foreground group-disabled:text-primary">
+          {busy ? 'Sending…' : 'Send message'}
+          {busy ? (
+            <LoaderCircle className="size-4 animate-spin" />
+          ) : (
+            <ArrowUpRight className="size-4" />
+          )}
+        </span>
+      </button>
+
+      <p aria-live="polite" className="text-xs leading-relaxed text-muted-foreground">
+        {status === 'error' ? (
+          <span className="text-destructive">
+            {message}{' '}
+            {mailto ? (
+              <a href={mailto} className="text-primary underline-offset-4 hover:underline">
+                Open email app
+              </a>
+            ) : (
+              <a href={`mailto:${SITE.email}`} className="text-primary underline-offset-4 hover:underline">
+                {SITE.email}
+              </a>
+            )}
+          </span>
+        ) : (
+          'Prefer email? Use the address on the left. Either way, you get a real reply.'
+        )}
+      </p>
+    </form>
+  )
+}
+
+function Field({
+  id,
+  label,
+  error,
+  children,
+}: {
+  id: string
+  label: string
+  error?: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className="flex flex-col gap-2">
+      <label htmlFor={id} className="label-mono">
+        {label}
+      </label>
+      {children}
+      {error ? (
+        <p id={`${id}-error`} className="text-xs text-destructive">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  )
+}
+
+function inputClass(error?: string) {
+  return cn(
+    'rounded-sm border bg-background px-4 py-3 text-sm outline-none transition-colors duration-300 placeholder:text-muted-foreground/70 focus:border-primary/60 disabled:opacity-60',
+    error ? 'border-destructive/60' : 'border-border',
+  )
+}
+
+export function Contact() {
+  const [copied, setCopied] = useState(false)
+  const [copyError, setCopyError] = useState(false)
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(SITE.email)
+      setCopied(true)
+      setCopyError(false)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      setCopied(false)
+      setCopyError(true)
+      setTimeout(() => setCopyError(false), 2500)
+    }
   }
 
   return (
@@ -106,7 +326,7 @@ export function Contact() {
 
         <h2 className="text-edge mt-8 max-w-[20ch] font-serif text-[clamp(2.6rem,9vw,7.5rem)]">
           <RevealWords text="Let’s talk about" />
-          <RevealWords text="your project." delay={180} accentWords={['project.']} />
+          <RevealWords text="your project." delay={180} accentWords={['project']} />
         </h2>
 
         <p className="mt-8 max-w-xl text-pretty leading-relaxed text-muted-foreground">
@@ -119,13 +339,13 @@ export function Contact() {
           <div className="flex flex-col gap-8 md:col-span-6">
             <Reveal className="flex flex-wrap items-center gap-3">
               <MagneticLink
-                href={`mailto:${EMAIL}`}
+                href={`mailto:${SITE.email}`}
                 cursorLabel="Email me"
                 className="group relative inline-flex items-center gap-2 overflow-hidden rounded-sm bg-primary px-6 py-4 text-sm font-medium text-primary-foreground"
               >
                 <span className="absolute inset-0 origin-left scale-x-0 bg-foreground transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-x-100" />
                 <span className="relative flex items-center gap-2 transition-colors duration-500 group-hover:text-background">
-                  {EMAIL}
+                  {SITE.email}
                   <ArrowUpRight className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </span>
               </MagneticLink>
@@ -133,14 +353,17 @@ export function Contact() {
               <button
                 type="button"
                 onClick={copy}
-                data-cursor={copied ? 'Copied' : 'Copy'}
+                data-cursor={copied ? 'Copied' : copyError ? 'Failed' : 'Copy'}
                 aria-label="Copy email address"
                 className="inline-flex items-center gap-2 rounded-sm border border-border px-5 py-4 text-sm text-muted-foreground transition-colors duration-500 hover:border-primary/50 hover:text-primary"
               >
                 {copied ? <Check className="size-4 text-primary" /> : <Copy className="size-4" />}
-                {copied ? 'Copied' : 'Copy address'}
+                {copied ? 'Copied' : copyError ? 'Copy failed' : 'Copy address'}
               </button>
             </Reveal>
+            <p aria-live="polite" className="sr-only">
+              {copied ? 'Email address copied' : copyError ? 'Could not copy email address' : ''}
+            </p>
 
             <Reveal delay={90}>
               <dl className="flex flex-col rounded-sm border border-border">
@@ -157,67 +380,8 @@ export function Contact() {
             </Reveal>
           </div>
 
-          <Reveal delay={140} direction="left" className="md:col-span-6">
-            <form onSubmit={onSubmit} className="flex flex-col gap-5 rounded-sm border border-border bg-card/40 p-6 sm:p-8">
-              <div className="flex flex-col gap-2">
-                <label htmlFor="name" className="label-mono">
-                  Name
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  required
-                  autoComplete="name"
-                  placeholder="Your name"
-                  className="rounded-sm border border-border bg-background px-4 py-3 text-sm outline-none transition-colors duration-300 placeholder:text-muted-foreground/70 focus:border-primary/60"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="email" className="label-mono">
-                  Email
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  placeholder="you@company.com"
-                  className="rounded-sm border border-border bg-background px-4 py-3 text-sm outline-none transition-colors duration-300 placeholder:text-muted-foreground/70 focus:border-primary/60"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="brief" className="label-mono">
-                  What are you building?
-                </label>
-                <textarea
-                  id="brief"
-                  name="brief"
-                  required
-                  rows={4}
-                  placeholder="Platform, timeline, and what needs to exist by the end of it."
-                  className="resize-none rounded-sm border border-border bg-background px-4 py-3 text-sm leading-relaxed outline-none transition-colors duration-300 placeholder:text-muted-foreground/70 focus:border-primary/60"
-                />
-              </div>
-
-              <button
-                type="submit"
-                data-cursor="Send"
-                className="group relative mt-1 overflow-hidden rounded-sm border border-primary/50 px-6 py-3.5 text-sm font-medium text-primary"
-              >
-                <span className="absolute inset-0 origin-bottom scale-y-0 bg-primary transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-y-100" />
-                <span className="relative flex items-center justify-center gap-2 transition-colors duration-500 group-hover:text-primary-foreground">
-                  {sent ? 'Message queued — thank you' : 'Send message'}
-                  {sent ? <Check className="size-4" /> : <ArrowUpRight className="size-4" />}
-                </span>
-              </button>
-
-              <p aria-live="polite" className="text-xs leading-relaxed text-muted-foreground">
-                {sent
-                  ? 'This is a front-end demo handler — connect it to your inbox or a form service to go live.'
-                  : 'Prefer email? Use the address on the left. Either way, you get a real reply.'}
-              </p>
-            </form>
+          <Reveal delay={140} direction="left" className="relative md:col-span-6">
+            <ContactForm />
           </Reveal>
         </div>
       </div>
@@ -229,12 +393,12 @@ export function Contact() {
               YM
             </span>
             <span className="text-sm text-muted-foreground">
-              Yasin Malak — React Native &amp; React engineer
+              {SITE.name} — {SITE.role}
             </span>
           </div>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
             <a
-              href={`mailto:${EMAIL}`}
+              href={`mailto:${SITE.email}`}
               data-cursor=""
               className="text-sm text-muted-foreground transition-colors duration-300 hover:text-primary"
             >

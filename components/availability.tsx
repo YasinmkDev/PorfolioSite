@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { ArrowUpRight } from 'lucide-react'
+import { Marquee } from '@/components/marquee'
 import { Reveal } from '@/components/reveal'
 
 const services = [
@@ -71,19 +72,17 @@ export function Availability() {
         </div>
       </div>
 
-      <div className="group relative flex overflow-hidden border-t border-border py-6">
-        <div className="flex shrink-0 motion-safe:animate-[marquee-x_30s_linear_infinite] motion-safe:group-hover:[animation-play-state:paused]">
-          {[...words, ...words].map((word, i) => (
-            <span
-              key={`${word}-${i}`}
-              className="flex shrink-0 items-center gap-8 whitespace-nowrap pr-8 font-serif text-[clamp(1.8rem,4.5vw,3.5rem)] text-foreground/25"
-            >
-              {word}
-              <span className="size-2 shrink-0 rounded-full bg-primary" />
-            </span>
-          ))}
-        </div>
-      </div>
+      <Marquee
+        items={words}
+        duration="30s"
+        className="border-t border-border py-6"
+        renderItem={(word) => (
+          <span className="flex shrink-0 items-center gap-8 whitespace-nowrap pr-8 font-serif text-[clamp(1.8rem,4.5vw,3.5rem)] text-foreground/25">
+            {word}
+            <span className="size-2 shrink-0 rounded-full bg-primary" />
+          </span>
+        )}
+      />
     </section>
   )
 }

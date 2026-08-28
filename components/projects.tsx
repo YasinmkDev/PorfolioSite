@@ -1,8 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowUpRight, Minus, Plus } from 'lucide-react'
-import { MediaFrame } from '@/components/media-frame'
+import Image from 'next/image'
+import { ArrowUpRight, Minus, Plus, Maximize2, Sparkles, Layers } from 'lucide-react'
+import {
+  ProjectGlassGalleryModal,
+  GallerySlide,
+} from '@/components/project-glass-gallery-modal'
 import { Reveal } from '@/components/reveal'
 import { SectionHeading } from '@/components/section-heading'
 import { cn } from '@/lib/utils'
@@ -18,9 +22,7 @@ type Project = {
   stack: string[]
   challenges: { title: string; body: string }[]
   outcome: string
-  image: string
-  imageAlt: string
-  imageCaption: string
+  slides: GallerySlide[]
 }
 
 const projects: Project[] = [
@@ -46,10 +48,36 @@ const projects: Project[] = [
     ],
     outcome:
       'A complete, deployable app with sign-up, workspaces, task lifecycle and assignment — and a codebase I can hand to another developer without a translation session.',
-    image: '/projects/taskflow.png',
-    imageAlt:
-      'TaskFlow dashboard showing a kanban board with task cards, assignees and a workspace sidebar',
-    imageCaption: 'Workspace board — task lifecycle and assignment',
+    slides: [
+      {
+        src: '/projects/taskflow.png',
+        alt: 'TaskFlow workspace board',
+        title: 'Workspace Kanban Board',
+        caption: 'Interactive task management with lifecycle state columns, assignees, and filters.',
+        tag: 'Kanban Board',
+      },
+      {
+        src: '/projects/api-integration.png',
+        alt: 'TaskFlow API & auth layer',
+        title: 'Session & Auth Pipeline',
+        caption: 'JWT token rotation, server-side middleware protection, and workspace tenant isolation.',
+        tag: 'API Architecture',
+      },
+      {
+        src: '/projects/select-pos.png',
+        alt: 'TaskFlow data modeling',
+        title: 'Project Data Modeling',
+        caption: 'High-speed indexed lookups with lean projected queries for sub-second board loads.',
+        tag: 'Data Pipeline',
+      },
+      {
+        src: '/projects/swiftbite.png',
+        alt: 'TaskFlow responsive interface',
+        title: 'Responsive Workspace UI',
+        caption: 'Optimistic UI mutations with automatic rollback on network failure.',
+        tag: 'UI States',
+      },
+    ],
   },
   {
     id: 'swiftbite',
@@ -73,10 +101,36 @@ const projects: Project[] = [
     ],
     outcome:
       'A sellable product rather than a portfolio demo: documented, themeable, and structured so buyers extend it instead of fighting it.',
-    image: '/projects/swiftbite.png',
-    imageAlt:
-      'Three phones showing the SwiftBite food delivery app: restaurant feed, dish detail and checkout screens',
-    imageCaption: 'Browse, dish detail and checkout flow',
+    slides: [
+      {
+        src: '/projects/swiftbite.png',
+        alt: 'SwiftBite mobile screens',
+        title: 'Restaurant & Checkout Screens',
+        caption: 'Multi-screen flow: browse feed, restaurant menu with modifiers, and multi-step checkout.',
+        tag: 'Mobile Screens',
+      },
+      {
+        src: '/projects/select-pos.png',
+        alt: 'SwiftBite performance optimization',
+        title: 'Low-Latency Virtualized Lists',
+        caption: 'Tuned flatlist memory footprints for smooth 60fps scrolling on low-end hardware.',
+        tag: 'Performance',
+      },
+      {
+        src: '/projects/api-integration.png',
+        alt: 'SwiftBite cart state management',
+        title: 'NativeWind Theme Tokens',
+        caption: 'Unified design tokens allowing whole-app rebranding and dark mode in a single configuration file.',
+        tag: 'Theming System',
+      },
+      {
+        src: '/projects/taskflow.png',
+        alt: 'SwiftBite cross-platform adaptation',
+        title: 'Universal Safe-Area Layouts',
+        caption: 'Edge-to-edge layout adaptation across both iOS notches and diverse Android safe-areas.',
+        tag: 'Cross-Platform',
+      },
+    ],
   },
   {
     id: 'select-pos',
@@ -100,10 +154,36 @@ const projects: Project[] = [
     ],
     outcome:
       'Real production engineering experience: legacy code, cross-platform builds, and a deployment where regressions have immediate business cost.',
-    image: '/projects/select-pos.png',
-    imageAlt:
-      'Point-of-sale terminal on a shop counter showing a product grid, order line items and a payment action',
-    imageCaption: 'Counter terminal — product grid and tender flow',
+    slides: [
+      {
+        src: '/projects/select-pos.png',
+        alt: 'select-pos terminal UI',
+        title: 'Cashier Terminal Interface',
+        caption: 'High-speed product grid, real-time line item calculations, and instant tender flow.',
+        tag: 'Counter Terminal',
+      },
+      {
+        src: '/projects/taskflow.png',
+        alt: 'select-pos offline sync logic',
+        title: 'Offline-First Persistence',
+        caption: 'Local database queue that commits sales offline and automatically synchronizes when online.',
+        tag: 'Offline Sync',
+      },
+      {
+        src: '/projects/api-integration.png',
+        alt: 'select-pos desktop platform builds',
+        title: 'Cross-Platform Compilation',
+        caption: 'Shared Dart codebase targeting Windows, macOS, Android tablets, and thermal receipt printers.',
+        tag: 'Native Platform',
+      },
+      {
+        src: '/projects/swiftbite.png',
+        alt: 'select-pos release flow',
+        title: 'Git-Based Release Pipeline',
+        caption: 'Zero-downtime regression testing ensuring critical register workflows never fail.',
+        tag: 'Release Flow',
+      },
+    ],
   },
   {
     id: 'api-integration',
@@ -127,15 +207,52 @@ const projects: Project[] = [
     ],
     outcome:
       'I can be productive against an unfamiliar API in a day, which is usually the difference between hiring a contractor and onboarding one.',
-    image: '/projects/api-integration.png',
-    imageAlt:
-      'Monitor showing a typed API client in a code editor beside an analytics dashboard with charts and a data table',
-    imageCaption: 'Typed client beside the dashboard it feeds',
+    slides: [
+      {
+        src: '/projects/api-integration.png',
+        alt: 'API Integration Dashboard and Client',
+        title: 'Typed Client & Analytics',
+        caption: 'Strictly typed OpenAPI contract clients connected to live metrics dashboards.',
+        tag: 'Type-Safe Client',
+      },
+      {
+        src: '/projects/taskflow.png',
+        alt: 'API retry and backoff pipeline',
+        title: 'Resilient Network Layer',
+        caption: 'Exponential backoff retry loops, 401 refresh interceptors, and typed error guards.',
+        tag: 'Resilience Layer',
+      },
+      {
+        src: '/projects/select-pos.png',
+        alt: 'API Query Cache',
+        title: 'Optimistic State Synchronization',
+        caption: 'Intelligent query cache invalidation preventing stale UI state and redundant queries.',
+        tag: 'State Sync',
+      },
+      {
+        src: '/projects/swiftbite.png',
+        alt: 'API Contract Testing',
+        title: 'Contract Drift Validation',
+        caption: 'Automated contract drift monitoring detecting breaking schema revisions early.',
+        tag: 'Contract Testing',
+      },
+    ],
   },
 ]
 
 export function Projects() {
   const [open, setOpen] = useState<string | null>(projects[0].id)
+  const [activeModalProject, setActiveModalProject] = useState<Project | null>(null)
+  const [modalInitialIndex, setModalInitialIndex] = useState(0)
+
+  const openGallery = (project: Project, index = 0) => {
+    setActiveModalProject(project)
+    setModalInitialIndex(index)
+  }
+
+  const closeGallery = () => {
+    setActiveModalProject(null)
+  }
 
   return (
     <section
@@ -152,6 +269,8 @@ export function Projects() {
       <div className="mt-14 border-t border-border md:mt-20">
         {projects.map((project, i) => {
           const isOpen = open === project.id
+          const primarySlide = project.slides[0]
+
           return (
             <Reveal key={project.id} delay={i * 90} distance={18}>
               <article
@@ -226,7 +345,7 @@ export function Projects() {
                           'opacity 600ms var(--ease-out-expo) 120ms, transform 600ms var(--ease-out-expo) 120ms',
                       }}
                     >
-                      <div className="flex flex-col gap-7 md:col-span-7 md:pl-14">
+                      <div className="flex flex-col gap-7 md:col-span-6 md:pl-14">
                         <Field label="The problem">{project.problem}</Field>
                         <Field label="My role">{project.role}</Field>
 
@@ -247,15 +366,55 @@ export function Projects() {
                         </div>
                       </div>
 
-                      <div className="flex flex-col gap-7 md:col-span-5">
+                      <div className="flex flex-col gap-7 md:col-span-6">
+                        {/* Interactive Glassmorphic Project Image Card */}
                         {isOpen ? (
-                          <MediaFrame
-                            src={project.image}
-                            alt={project.imageAlt}
-                            caption={project.imageCaption}
-                            priority={i === 0}
-                            sizes="(min-width: 768px) 40vw, 100vw"
-                          />
+                          <div
+                            onClick={() => openGallery(project, 0)}
+                            className="group/gallery relative aspect-[16/10] w-full overflow-hidden rounded-sm border border-border bg-card cursor-pointer"
+                          >
+                            <Image
+                              src={primarySlide.src}
+                              alt={primarySlide.alt}
+                              fill
+                              sizes="(min-width: 768px) 45vw, 100vw"
+                              priority={i === 0}
+                              className="object-cover object-top transition-all duration-700 ease-[var(--ease-out-expo)] group-hover/gallery:scale-105"
+                            />
+
+                            {/* Dark shade gradient */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-80" />
+
+                            {/* Floating Glassmorphic Click Prompt */}
+                            <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-300 group-hover/gallery:opacity-100 bg-background/40 backdrop-blur-xs">
+                              <div className="flex items-center gap-2.5 rounded-full border border-primary/40 bg-card/90 px-4 py-2 text-xs font-mono text-foreground backdrop-blur-md shadow-2xl transition-transform duration-300 group-hover/gallery:scale-105">
+                                <Sparkles className="size-3.5 text-primary" />
+                                <span className="font-medium">Open 3D Glass Gallery</span>
+                                <Maximize2 className="size-3 text-muted-foreground" />
+                              </div>
+                            </div>
+
+                            {/* Top Badge & Slide Count Indicator */}
+                            <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                              <span className="rounded-full bg-background/80 px-2.5 py-1 font-mono text-[0.65rem] text-primary border border-border/80 backdrop-blur-md">
+                                {primarySlide.tag}
+                              </span>
+                              <span className="rounded-full bg-background/80 px-2.5 py-1 font-mono text-[0.65rem] text-muted-foreground border border-border/80 backdrop-blur-md flex items-center gap-1">
+                                <Layers className="size-3 text-primary" />
+                                {`${project.slides.length} Screens`}
+                              </span>
+                            </div>
+
+                            {/* Bottom Caption */}
+                            <div className="absolute bottom-2.5 inset-x-3 flex items-center justify-between text-muted-foreground pointer-events-none">
+                              <span className="label-mono text-foreground/90 truncate max-w-[280px]">
+                                {primarySlide.caption}
+                              </span>
+                              <span className="font-mono text-[0.65rem] text-primary">
+                                Click to expand
+                              </span>
+                            </div>
+                          </div>
                         ) : null}
 
                         <div className="flex flex-col gap-3">
@@ -296,6 +455,18 @@ export function Projects() {
           )
         })}
       </div>
+
+      {/* Fullscreen 3D Spatial Glassmorphic Gallery Modal */}
+      {activeModalProject && (
+        <ProjectGlassGalleryModal
+          isOpen={!!activeModalProject}
+          onClose={closeGallery}
+          slides={activeModalProject.slides}
+          projectName={activeModalProject.name}
+          projectKind={activeModalProject.kind}
+          initialIndex={modalInitialIndex}
+        />
+      )}
     </section>
   )
 }

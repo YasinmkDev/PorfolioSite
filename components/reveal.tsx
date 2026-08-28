@@ -113,11 +113,13 @@ export function RevealWords({
 }) {
   const { ref, inView } = useInView<HTMLSpanElement>(0.25)
   const words = text.split(' ')
+  const normalize = (value: string) => value.replace(/[^\w'-]/g, '').toLowerCase()
+  const accentSet = new Set(accentWords.map(normalize))
 
   return (
     <span ref={ref} className={cn('block', className)}>
       {words.map((word, i) => {
-        const isAccent = accentWords.includes(word.replace(/[^\w'-]/g, ''))
+        const isAccent = accentSet.has(normalize(word))
         return (
           <span
             key={`${word}-${i}`}

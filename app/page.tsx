@@ -15,7 +15,7 @@ export default function Page() {
       <Preloader />
       <CustomCursor />
       <SiteNav />
-      <main className="relative">
+      <main id="main" className="relative">
         <Hero />
         <Projects />
         <About />

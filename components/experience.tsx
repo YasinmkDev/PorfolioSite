@@ -43,7 +43,7 @@ export function Experience() {
         index="04"
         label="Experience"
         title="Employed, freelancing, and finishing a degree."
-        accentWords={['freelancing,']}
+        accentWords={['freelancing']}
       />
 
       <div className="mt-14 md:mt-20">

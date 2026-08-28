@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
+import { SITE } from '@/lib/site'
 import { cn } from '@/lib/utils'
 
 const links = [
@@ -15,7 +16,7 @@ const links = [
 export function SiteNav() {
   const [progress, setProgress] = useState(0)
   const [scrolled, setScrolled] = useState(false)
-  const [active, setActive] = useState('work')
+  const [active, setActive] = useState('')
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -37,8 +38,9 @@ export function SiteNav() {
   }, [])
 
   useEffect(() => {
-    const sections = links
-      .map((l) => document.getElementById(l.id))
+    const ids = ['top', ...links.map((l) => l.id)]
+    const sections = ids
+      .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => Boolean(el))
 
     const io = new IntersectionObserver(
@@ -46,7 +48,8 @@ export function SiteNav() {
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-        if (visible) setActive(visible.target.id)
+        if (!visible) return
+        setActive(visible.target.id === 'top' ? '' : visible.target.id)
       },
       { rootMargin: '-45% 0px -45% 0px', threshold: [0, 0.2, 0.6] },
     )
@@ -184,10 +187,10 @@ export function SiteNav() {
             Start a project
           </a>
           <a
-            href="mailto:hello@yasinmalak.dev"
+            href={`mailto:${SITE.email}`}
             className="text-center font-mono text-xs tracking-widest text-muted-foreground uppercase"
           >
-            hello@yasinmalak.dev
+            {SITE.email}
           </a>
         </div>
       </div>

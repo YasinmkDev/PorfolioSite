@@ -1,9 +1,16 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { FlowField } from '@/components/flow-field'
+import { Marquee } from '@/components/marquee'
 import { useSiteLoaded } from '@/hooks/use-site-loaded'
+
+const Hero3DPolygon = dynamic(
+  () => import('@/components/hero-3d-polygon').then((m) => m.Hero3DPolygon),
+  { ssr: false },
+)
 
 const marquee = [
   'React Native',
@@ -98,32 +105,43 @@ export function Hero() {
       />
 
       <div className="relative mx-auto flex w-full max-w-[92rem] flex-1 flex-col justify-center px-5 pb-10 pt-16 sm:px-8 lg:px-12">
-        <div
-          className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-2"
-          style={enter(120)}
-        >
-          <span className="label-mono">Yasin Malak</span>
-          <span className="h-px w-8 bg-border" />
-          <span className="label-mono">React Native / React Engineer</span>
-        </div>
+        <div className="grid items-center gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(16rem,0.95fr)] lg:gap-8">
+          <div>
+            <div
+              className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-2"
+              style={enter(120)}
+            >
+              <span className="label-mono">Yasin Malak</span>
+              <span className="h-px w-8 bg-border" />
+              <span className="label-mono">React Native / React Engineer</span>
+            </div>
 
-        <h1 className="text-edge max-w-[22ch] font-serif text-[clamp(3.1rem,11.5vw,10.5rem)] font-normal">
-          <span className="block overflow-hidden">
-            <span className="block" style={enter(220)}>
-              Interfaces
-            </span>
-          </span>
-          <span className="block overflow-hidden">
-            <span className="block italic text-primary" style={enter(320)}>
-              engineered
-            </span>
-          </span>
-          <span className="block overflow-hidden">
-            <span className="block" style={enter(420)}>
-              to ship.
-            </span>
-          </span>
-        </h1>
+            <h1 className="text-edge max-w-[22ch] font-serif text-[clamp(3.1rem,11.5vw,10.5rem)] font-normal">
+              <span className="block overflow-hidden">
+                <span className="block" style={enter(220)}>
+                  Interfaces
+                </span>
+              </span>
+              <span className="block overflow-hidden">
+                <span className="block italic text-primary" style={enter(320)}>
+                  engineered
+                </span>
+              </span>
+              <span className="block overflow-hidden">
+                <span className="block" style={enter(420)}>
+                  to ship.
+                </span>
+              </span>
+            </h1>
+          </div>
+
+          <div
+            className="relative mx-auto mt-6 flex w-full max-w-xl items-center justify-center lg:mt-0 lg:block"
+            style={enter(380)}
+          >
+            <Hero3DPolygon />
+          </div>
+        </div>
 
         <div className="mt-10 grid gap-10 md:mt-14 md:grid-cols-12 md:items-end">
           <p
@@ -177,19 +195,18 @@ export function Hero() {
           <LocalClock />
         </div>
 
-        <div className="group relative flex overflow-hidden border-t border-border py-3">
-          <div className="flex shrink-0 gap-8 pr-8 motion-safe:animate-[marquee-x_38s_linear_infinite] motion-safe:group-hover:[animation-play-state:paused]">
-            {[...marquee, ...marquee].map((item, i) => (
-              <span
-                key={`${item}-${i}`}
-                className="flex shrink-0 items-center gap-8 whitespace-nowrap font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground"
-              >
-                {item}
-                <span className="size-1 rounded-full bg-primary/60" />
-              </span>
-            ))}
-          </div>
-        </div>
+        <Marquee
+          items={marquee}
+          duration="38s"
+          className="border-t border-border py-3"
+          trackClassName="gap-8 pr-8"
+          renderItem={(item) => (
+            <span className="flex shrink-0 items-center gap-8 whitespace-nowrap font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
+              {item}
+              <span className="size-1 rounded-full bg-primary/60" />
+            </span>
+          )}
+        />
       </div>
     </section>
   )

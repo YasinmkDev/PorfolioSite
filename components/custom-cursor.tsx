@@ -103,7 +103,7 @@ export function CustomCursor() {
   }, [])
 
   return (
-    <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[100] hidden md:block">
+    <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[9999] hidden md:block">
       <div
         ref={ringRef}
         className="group/ring absolute left-0 top-0 flex size-10 items-center justify-center rounded-full border border-foreground/40 opacity-0 transition-[background-color,border-color,opacity] duration-300 data-[active=true]:border-primary data-[active=true]:bg-primary data-[pressed=true]:bg-primary/30"

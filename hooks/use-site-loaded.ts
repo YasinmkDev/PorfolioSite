@@ -24,4 +24,10 @@ export function useSiteLoaded() {
 export function markSiteLoaded() {
   document.documentElement.dataset.loaded = 'true'
   window.dispatchEvent(new Event(SITE_LOADED_EVENT))
+  const { hash } = window.location
+  if (hash.length > 1) {
+    requestAnimationFrame(() => {
+      document.querySelector(hash)?.scrollIntoView()
+    })
+  }
 }
