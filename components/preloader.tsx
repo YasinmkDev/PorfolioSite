@@ -5,7 +5,7 @@ import { markSiteLoaded } from '@/hooks/use-site-loaded'
 import { cn } from '@/lib/utils'
 
 /** Resources worth waiting on: the first project shot is visible as soon as you scroll. */
-const CRITICAL_IMAGES = ['/projects/taskflow.png']
+const CRITICAL_IMAGES = ['/projects/ledgerProject/first_image_withScreenShotsAndTextOnRight.png']
 
 /** Weighted real-loading milestones. Weights sum to 1. */
 const WEIGHTS = { fonts: 0.28, images: 0.32, page: 0.4 }
