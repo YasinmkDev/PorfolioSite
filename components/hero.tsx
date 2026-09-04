@@ -116,7 +116,7 @@ export function Hero() {
             className="max-w-xl text-pretty leading-relaxed text-muted-foreground md:col-span-6 lg:col-span-5"
             style={enter(540)}
           >
-            Final-year Computer Science student and working React Native / React developer. I build
+            Recently graduated Software Engineering professional and working React Native / React developer. I build
             cross-platform mobile apps, business dashboards, and the API layers that hold them
             together — production code, not prototypes.
           </p>

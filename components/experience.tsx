@@ -25,10 +25,10 @@ const entries = [
     ],
   },
   {
-    period: 'Final year',
-    role: 'BS Computer Science',
+    period: 'Recently Graduated',
+    role: 'BS Software Engineering',
     org: 'Virtual University of Pakistan',
-    body: 'Final-year student, with TaskFlow — a full-stack Next.js, Express and MongoDB application — as the final year project. Studying while working professionally has meant treating every deadline as a real one.',
+    body: 'Recently graduated with a BS in Software Engineering, completing TaskFlow — a full-stack Next.js, Express and MongoDB application — as the capstone graduation project. Studying while working professionally has instilled treating every deadline and release as production-critical.',
     points: [],
   },
 ]
@@ -49,27 +49,31 @@ export function Experience() {
       <div className="mt-14 md:mt-20">
         {entries.map((entry, i) => (
           <Reveal key={entry.role} delay={i * 110}>
-            <div className="group relative grid gap-6 border-t border-border py-9 transition-colors duration-500 last:border-b md:grid-cols-12 md:gap-10 md:py-12">
-              <div className="flex items-start gap-4 md:col-span-3">
-                <span className="mt-2 size-1.5 shrink-0 rounded-full bg-border transition-colors duration-500 group-hover:bg-primary" />
-                <span className="label-mono">{entry.period}</span>
+            <div className="group relative grid gap-6 border-t border-border py-8 sm:py-10 transition-all duration-300 last:border-b hover:bg-card/30 md:grid-cols-12 md:gap-10 md:py-12 md:px-4 rounded-sm">
+              <div className="flex items-start gap-3 md:col-span-3">
+                <span className="mt-1.5 flex size-2 shrink-0 rounded-full bg-border transition-all duration-300 group-hover:scale-125 group-hover:bg-primary group-hover:shadow-[0_0_8px_rgba(198,255,71,0.6)]" />
+                <span className="label-mono font-bold tracking-wider text-primary">{entry.period}</span>
               </div>
 
               <div className="md:col-span-5">
-                <h3 className="text-edge font-serif text-[clamp(1.6rem,3.2vw,2.4rem)] transition-colors duration-500 group-hover:text-primary">
+                <h3 className="text-edge font-serif text-[clamp(1.6rem,3vw,2.3rem)] font-normal transition-colors duration-300 group-hover:text-primary">
                   {entry.role}
                 </h3>
-                <p className="mt-2 text-sm text-muted-foreground">{entry.org}</p>
+                <div className="mt-2 inline-flex items-center gap-2">
+                  <span className="rounded bg-secondary/80 px-2 py-0.5 font-mono text-xs text-muted-foreground border border-border/60">
+                    {entry.org}
+                  </span>
+                </div>
               </div>
 
               <div className="flex flex-col gap-4 md:col-span-4">
-                <p className="text-pretty leading-relaxed text-muted-foreground">{entry.body}</p>
+                <p className="text-pretty leading-relaxed text-sm text-foreground/80 md:text-base">{entry.body}</p>
                 {entry.points.length > 0 && (
-                  <ul className="flex flex-col gap-2">
+                  <ul className="flex flex-col gap-2 mt-1">
                     {entry.points.map((point) => (
-                      <li key={point} className="flex gap-3 text-sm leading-relaxed text-foreground/80">
-                        <span className="mt-2 h-px w-4 shrink-0 bg-primary/70" />
-                        {point}
+                      <li key={point} className="flex items-start gap-2.5 text-xs leading-relaxed text-muted-foreground sm:text-sm">
+                        <span className="mt-2 size-1 shrink-0 rounded-full bg-primary" />
+                        <span>{point}</span>
                       </li>
                     ))}
                   </ul>

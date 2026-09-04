@@ -71,32 +71,36 @@ export function Stack() {
                     <Reveal delay={gi * 70 + ti * 55} distance={12}>
                       <button
                         type="button"
+                        onClick={() => setHovered(tech)}
                         onMouseEnter={() => setHovered(tech)}
                         onFocus={() => setHovered(tech)}
                         data-cursor=""
                         className={cn(
-                          'group relative flex w-full flex-col gap-2 border-b border-border/60 px-5 py-4 text-left transition-colors duration-500 last:border-0',
-                          hovered.name === tech.name ? 'bg-card' : 'hover:bg-card/60',
+                          'group relative flex w-full flex-col gap-2 border-b border-border/60 px-5 py-4 text-left transition-colors duration-200 last:border-0 cursor-pointer',
+                          hovered.name === tech.name ? 'bg-card/90' : 'hover:bg-card/50',
                         )}
                       >
                         <span className="flex items-baseline justify-between gap-3">
                           <span
                             className={cn(
-                              'text-sm font-medium tracking-tight transition-colors duration-500',
-                              hovered.name === tech.name && 'text-primary',
+                              'text-sm font-medium tracking-tight transition-colors duration-200',
+                              hovered.name === tech.name ? 'text-primary font-semibold' : 'text-foreground/90',
                             )}
                           >
                             {tech.name}
                           </span>
                           <span className="font-mono text-[0.65rem] tabular-nums text-muted-foreground">
-                            {Math.round(tech.level * 100)}
+                            {Math.round(tech.level * 100)}%
                           </span>
                         </span>
-                        <span className="block h-px w-full bg-border">
+                        <span className="block h-1 w-full rounded-full bg-border/60 overflow-hidden">
                           <span
-                            className="block h-px origin-left bg-primary transition-transform duration-700 ease-[var(--ease-out-expo)]"
+                            className={cn(
+                              'block h-full origin-left transition-all duration-500 ease-[var(--ease-out-expo)]',
+                              hovered.name === tech.name ? 'bg-primary' : 'bg-primary/40',
+                            )}
                             style={{
-                              transform: `scaleX(${hovered.name === tech.name ? tech.level : tech.level * 0.55})`,
+                              transform: `scaleX(${hovered.name === tech.name ? tech.level : tech.level * 0.6})`,
                             }}
                           />
                         </span>
@@ -111,10 +115,13 @@ export function Stack() {
 
         <Reveal
           delay={120}
-          className="mt-6 flex min-h-24 flex-col justify-center rounded-sm border border-border bg-background px-5 py-5 sm:flex-row sm:items-center sm:gap-8"
+          className="mt-6 flex min-h-24 flex-col justify-center rounded-md border border-border bg-background p-5 sm:flex-row sm:items-center sm:gap-8 shadow-sm"
         >
-          <span className="label-mono shrink-0 text-primary sm:w-40">{hovered.name}</span>
-          <p key={hovered.name} className="mt-2 text-pretty leading-relaxed text-muted-foreground sm:mt-0">
+          <div className="flex items-center gap-2.5 shrink-0 sm:w-48">
+            <span className="size-2 rounded-full bg-primary motion-safe:animate-pulse" />
+            <span className="label-mono font-bold text-primary">{hovered.name}</span>
+          </div>
+          <p key={hovered.name} className="mt-2 text-pretty leading-relaxed text-foreground/90 text-sm sm:mt-0">
             {hovered.note}
           </p>
         </Reveal>

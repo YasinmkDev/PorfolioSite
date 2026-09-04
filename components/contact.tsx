@@ -275,8 +275,8 @@ function Field({
 
 function inputClass(error?: string) {
   return cn(
-    'rounded-sm border bg-background px-4 py-3 text-sm outline-none transition-colors duration-300 placeholder:text-muted-foreground/70 focus:border-primary/60 disabled:opacity-60',
-    error ? 'border-destructive/60' : 'border-border',
+    'rounded-md border bg-background px-4 py-3 text-sm outline-none transition-all duration-200 placeholder:text-muted-foreground/60 focus:border-primary focus:ring-1 focus:ring-primary/40 disabled:opacity-60',
+    error ? 'border-destructive/80 focus:border-destructive focus:ring-destructive/30' : 'border-border',
   )
 }
 
@@ -319,17 +319,19 @@ export function Contact() {
       />
 
       <div className="relative mx-auto w-full max-w-[92rem] px-5 py-24 sm:px-8 md:py-32 lg:px-12">
-        <Reveal className="flex items-center gap-4" distance={12}>
-          <span className="label-mono text-primary">05</span>
-          <span className="label-mono">Contact</span>
+        <Reveal className="flex items-center gap-3.5" distance={12}>
+          <span className="flex size-6 items-center justify-center rounded-sm bg-primary/10 border border-primary/30 font-mono text-xs font-bold text-primary">
+            05
+          </span>
+          <span className="label-mono uppercase tracking-[0.16em] text-muted-foreground">Contact</span>
         </Reveal>
 
-        <h2 className="text-edge mt-8 max-w-[20ch] font-serif text-[clamp(2.6rem,9vw,7.5rem)]">
+        <h2 className="text-edge mt-8 max-w-[20ch] font-serif text-[clamp(2.6rem,8.5vw,7rem)] font-normal leading-[1.05]">
           <RevealWords text="Let’s talk about" />
           <RevealWords text="your project." delay={180} accentWords={['project']} />
         </h2>
 
-        <p className="mt-8 max-w-xl text-pretty leading-relaxed text-muted-foreground">
+        <p className="mt-8 max-w-xl text-pretty leading-relaxed text-muted-foreground md:text-lg">
           Tell me what you are building and where it is stuck. If I am the right fit I will say so
           and give you a plan; if I am not, I will tell you that too. No forms-into-the-void — every
           message reaches me directly.
@@ -341,7 +343,7 @@ export function Contact() {
               <MagneticLink
                 href={`mailto:${SITE.email}`}
                 cursorLabel="Email me"
-                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-sm bg-primary px-6 py-4 text-sm font-medium text-primary-foreground"
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-md bg-primary px-6 py-4 text-sm font-semibold text-primary-foreground shadow-md"
               >
                 <span className="absolute inset-0 origin-left scale-x-0 bg-foreground transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-x-100" />
                 <span className="relative flex items-center gap-2 transition-colors duration-500 group-hover:text-background">
@@ -355,7 +357,7 @@ export function Contact() {
                 onClick={copy}
                 data-cursor={copied ? 'Copied' : copyError ? 'Failed' : 'Copy'}
                 aria-label="Copy email address"
-                className="inline-flex items-center gap-2 rounded-sm border border-border px-5 py-4 text-sm text-muted-foreground transition-colors duration-500 hover:border-primary/50 hover:text-primary"
+                className="inline-flex items-center gap-2 rounded-md border border-border px-5 py-4 text-sm font-medium text-muted-foreground transition-colors duration-300 hover:border-primary/50 hover:text-primary cursor-pointer"
               >
                 {copied ? <Check className="size-4 text-primary" /> : <Copy className="size-4" />}
                 {copied ? 'Copied' : copyError ? 'Copy failed' : 'Copy address'}
@@ -366,14 +368,17 @@ export function Contact() {
             </p>
 
             <Reveal delay={90}>
-              <dl className="flex flex-col rounded-sm border border-border">
+              <dl className="flex flex-col rounded-md border border-border overflow-hidden bg-card/20">
+                <div className="border-b border-border bg-card/40 px-5 py-3">
+                  <span className="label-mono uppercase text-xs tracking-wider text-primary">Availability & Terms</span>
+                </div>
                 {availability.map((item) => (
                   <div
                     key={item.k}
-                    className="flex flex-col gap-1 border-b border-border px-5 py-4 transition-colors duration-500 last:border-0 hover:bg-card sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+                    className="flex flex-col gap-1 border-b border-border/80 px-5 py-3.5 transition-colors duration-200 last:border-0 hover:bg-card sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
                   >
-                    <dt className="label-mono shrink-0">{item.k}</dt>
-                    <dd className="text-sm text-foreground sm:text-right">{item.v}</dd>
+                    <dt className="label-mono text-xs text-muted-foreground shrink-0">{item.k}</dt>
+                    <dd className="text-sm font-medium text-foreground/90 sm:text-right">{item.v}</dd>
                   </div>
                 ))}
               </dl>

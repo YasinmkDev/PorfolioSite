@@ -4,7 +4,7 @@ import { SectionHeading } from '@/components/section-heading'
 const facts = [
   { k: 'Role', v: 'React Native / React Developer' },
   { k: 'Focus', v: 'Cross-platform apps, dashboards, API integration' },
-  { k: 'Education', v: 'BS Computer Science — Virtual University of Pakistan' },
+  { k: 'Education', v: 'BS Software Engineering — Virtual University of Pakistan (Recently Graduated)' },
   { k: 'Engagements', v: 'Contract, retainer, or project-based' },
   { k: 'Working hours', v: '07:00 – 23:00 UTC+5 (flexible for calls)' },
   { k: 'Languages', v: 'English, Urdu' },
@@ -34,7 +34,7 @@ export function About() {
         <div className="flex flex-col gap-6 md:col-span-7">
           <Reveal>
             <p className="max-w-2xl text-lg leading-relaxed text-foreground/90 md:text-xl">
-              I am a final-year Computer Science student who has been working as a professional
+              I am a recently graduated Software Engineer who has been working as a professional
               React Native and React developer at a software house, with freelance work running
               alongside it. That mix means I write code that goes into real releases, on real
               deadlines, reviewed by real teams.
@@ -51,20 +51,27 @@ export function About() {
           </Reveal>
           <Reveal delay={180}>
             <p className="max-w-2xl leading-relaxed text-muted-foreground">
-              After graduation I am building my practice around remote international clients — teams
+              Having recently graduated, I am building my practice around remote international clients — teams
               that need a dependable front-end and mobile engineer without adding a headcount.
             </p>
           </Reveal>
 
-          <div className="mt-6 grid gap-px overflow-hidden rounded-sm border border-border bg-border sm:grid-cols-3">
+          <div className="mt-6 grid gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-3">
             {principles.map((p, i) => (
               <Reveal
                 key={p.title}
                 delay={i * 110}
-                className="group flex h-full flex-col gap-2 bg-background p-5 transition-colors duration-500 hover:bg-card"
+                className="group relative flex h-full flex-col gap-2.5 bg-background p-5 transition-all duration-300 hover:bg-card hover:shadow-lg"
               >
-                <span className="label-mono text-primary">{`0${i + 1}`}</span>
-                <h3 className="font-medium tracking-tight">{p.title}</h3>
+                <div className="flex items-center justify-between">
+                  <span className="flex size-6 items-center justify-center rounded bg-primary/10 border border-primary/25 font-mono text-xs font-bold text-primary">
+                    {`0${i + 1}`}
+                  </span>
+                  <span className="h-1 w-6 rounded-full bg-primary/20 transition-all duration-300 group-hover:w-10 group-hover:bg-primary" />
+                </div>
+                <h3 className="font-serif text-lg font-normal tracking-tight text-foreground transition-colors group-hover:text-primary">
+                  {p.title}
+                </h3>
                 <p className="text-sm leading-relaxed text-muted-foreground">{p.body}</p>
               </Reveal>
             ))}
@@ -72,14 +79,17 @@ export function About() {
         </div>
 
         <Reveal delay={120} direction="left" className="md:col-span-5">
-          <dl className="flex flex-col rounded-sm border border-border">
+          <dl className="flex flex-col rounded-md border border-border overflow-hidden bg-card/20">
+            <div className="border-b border-border bg-card/40 px-5 py-3">
+              <span className="label-mono uppercase text-xs tracking-wider text-primary">Key Profile Facts</span>
+            </div>
             {facts.map((f) => (
               <div
                 key={f.k}
-                className="group flex flex-col gap-1 border-b border-border px-5 py-4 transition-colors duration-500 last:border-0 hover:bg-card sm:flex-row sm:items-baseline sm:justify-between sm:gap-8"
+                className="group flex flex-col gap-1 border-b border-border/80 px-5 py-3.5 transition-colors duration-200 last:border-0 hover:bg-card sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
               >
-                <dt className="label-mono shrink-0">{f.k}</dt>
-                <dd className="text-sm leading-relaxed text-foreground sm:text-right">{f.v}</dd>
+                <dt className="label-mono text-xs text-muted-foreground transition-colors group-hover:text-primary shrink-0">{f.k}</dt>
+                <dd className="text-sm font-medium leading-relaxed text-foreground/90 sm:text-right">{f.v}</dd>
               </div>
             ))}
           </dl>

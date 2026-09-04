@@ -57,15 +57,22 @@ export function Availability() {
           </Reveal>
         </div>
 
-        <div className="mt-12 grid gap-px overflow-hidden rounded-sm border border-border bg-border md:grid-cols-3">
+        <div className="mt-12 grid gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-3">
           {services.map((service, i) => (
             <Reveal
               key={service.title}
               delay={i * 110}
-              className="group flex h-full flex-col gap-3 bg-background p-6 transition-colors duration-500 hover:bg-card"
+              className="group relative flex h-full flex-col gap-3.5 bg-background p-6 sm:p-7 transition-all duration-300 hover:bg-card hover:shadow-lg"
             >
-              <span className="label-mono text-primary">{`0${i + 1}`}</span>
-              <h3 className="font-serif text-2xl tracking-tight">{service.title}</h3>
+              <div className="flex items-center justify-between">
+                <span className="flex size-7 items-center justify-center rounded bg-primary/10 border border-primary/30 font-mono text-xs font-bold text-primary">
+                  {`0${i + 1}`}
+                </span>
+                <span className="h-1 w-6 rounded-full bg-primary/20 transition-all duration-300 group-hover:w-12 group-hover:bg-primary" />
+              </div>
+              <h3 className="font-serif text-2xl tracking-tight text-foreground transition-colors group-hover:text-primary">
+                {service.title}
+              </h3>
               <p className="text-sm leading-relaxed text-muted-foreground">{service.body}</p>
             </Reveal>
           ))}

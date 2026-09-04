@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono, Instrument_Serif } from 'next/font/google'
+import { StructuredData } from '@/components/structured-data'
 import './globals.css'
 
 const geistSans = Geist({
@@ -23,28 +24,105 @@ const instrumentSerif = Instrument_Serif({
   display: 'swap',
 })
 
+const siteUrl = 'https://yasinmalak.dev'
+
 export const metadata: Metadata = {
-  title: 'Yasin Malak — React Native & React Engineer',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'Yasin Malak — React Native, React & Full Stack Software Engineer',
+    template: '%s | Yasin Malak',
+  },
   description:
-    'React Native and React engineer building production mobile apps, business dashboards, and API-driven products. Available for remote work with international clients.',
-  generator: 'v0.app',
+    'Yasin Malak is a Software Engineer specializing in React Native, React, Next.js, TypeScript, and Full Stack web & mobile development. Building production iOS/Android apps, business dashboards, and scalable API platforms. Available for remote contract & freelance work worldwide.',
+  applicationName: 'Yasin Malak Portfolio',
+  authors: [{ name: 'Yasin Malak', url: siteUrl }],
+  creator: 'Yasin Malak',
+  publisher: 'Yasin Malak',
+  category: 'technology',
   keywords: [
     'React Native developer',
+    'React Native engineer',
     'React developer',
-    'TypeScript',
-    'Expo',
-    'Firebase',
-    'REST API integration',
-    'remote freelance developer',
+    'Full Stack developer',
+    'Full Stack engineer',
+    'Software Engineer',
+    'Mobile App developer',
+    'Mobile App engineer',
+    'iOS React Native developer',
+    'Android React Native developer',
+    'Next.js developer',
+    'TypeScript developer',
+    'Expo developer',
+    'Frontend developer',
+    'Web and Mobile developer',
+    'Firebase developer',
+    'REST API developer',
+    'Node.js Express developer',
+    'MongoDB developer',
+    'Tailwind CSS developer',
+    'Freelance React Native developer',
+    'Freelance Full Stack engineer',
+    'Remote Software Engineer',
+    'Cross-Platform Mobile Engineer',
     'Yasin Malak',
+    'Yasin Malak Portfolio',
   ],
-  authors: [{ name: 'Yasin Malak' }],
+  alternates: {
+    canonical: '/',
+    languages: {
+      'en-US': '/',
+      'x-default': '/',
+    },
+  },
   openGraph: {
-    title: 'Yasin Malak — React Native & React Engineer',
+    title: 'Yasin Malak — React Native, React & Full Stack Software Engineer',
     description:
-      'Production mobile apps, business dashboards, and API-driven products. Remote-first, available for international clients.',
-    type: 'website',
+      'Software Engineer building production mobile apps, high-performance web dashboards, and API platforms with React Native, React, TypeScript, and Next.js. Available for remote contracts.',
+    url: siteUrl,
+    siteName: 'Yasin Malak Portfolio',
+    type: 'profile',
+    firstName: 'Yasin',
+    lastName: 'Malak',
+    gender: 'male',
+    username: 'yasinmalak',
     locale: 'en_US',
+    images: [
+      {
+        url: '/projects/ledgerProject/first_image_withScreenShotsAndTextOnRight.png',
+        width: 1200,
+        height: 630,
+        alt: 'Yasin Malak — React Native & Full Stack Software Engineering Showcase',
+        type: 'image/png',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Yasin Malak — React Native, React & Full Stack Software Engineer',
+    description:
+      'Production React Native, React, Next.js, and Full Stack Software Engineer. Cross-platform mobile apps & API architecture.',
+    creator: '@yasinmalak',
+    images: [
+      {
+        url: '/projects/ledgerProject/first_image_withScreenShotsAndTextOnRight.png',
+        width: 1200,
+        height: 630,
+        alt: 'Yasin Malak — React Native & Full Stack Software Engineering Showcase',
+      },
+    ],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   icons: {
     icon: [
@@ -70,6 +148,7 @@ export const viewport: Viewport = {
   themeColor: '#0b0d0c',
   width: 'device-width',
   initialScale: 1,
+  maximumScale: 5,
 }
 
 export default function RootLayout({
@@ -82,6 +161,9 @@ export default function RootLayout({
       lang="en"
       className={`bg-background ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
     >
+      <head>
+        <StructuredData />
+      </head>
       <body className="font-sans antialiased">
         <a
           href="#main"
