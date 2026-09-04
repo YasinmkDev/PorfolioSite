@@ -1,16 +1,10 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import dynamic from 'next/dynamic'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
-import { FlowField } from '@/components/flow-field'
+import { Hero3DPolygon } from '@/components/hero-3d-polygon'
 import { Marquee } from '@/components/marquee'
 import { useSiteLoaded } from '@/hooks/use-site-loaded'
-
-const Hero3DPolygon = dynamic(
-  () => import('@/components/hero-3d-polygon').then((m) => m.Hero3DPolygon),
-  { ssr: false },
-)
 
 const marquee = [
   'React Native',
@@ -53,26 +47,8 @@ function LocalClock() {
 
 export function Hero() {
   const wrapRef = useRef<HTMLDivElement>(null)
-  const [scroll, setScroll] = useState(0)
   /* hold the entrance until the preloader curtain starts lifting */
   const mounted = useSiteLoaded()
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    let raf = 0
-    const onScroll = () => {
-      cancelAnimationFrame(raf)
-      raf = requestAnimationFrame(() => {
-        setScroll(Math.min(1, window.scrollY / (window.innerHeight || 1)))
-      })
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      cancelAnimationFrame(raf)
-    }
-  }, [])
 
   const enter = (delay: number) => ({
     opacity: mounted ? 1 : 0,
@@ -86,23 +62,15 @@ export function Hero() {
       ref={wrapRef}
       className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden pt-16"
     >
-      {/* generative field */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          transform: `translate3d(0, ${scroll * 90}px, 0)`,
-          opacity: 1 - scroll * 0.85,
-        }}
-      >
-        <FlowField className="absolute inset-0 size-full" />
-        <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_-10%,transparent_35%,var(--background)_88%)]" />
-      </div>
-
-      {/* drifting grid */}
+      {/* Ambient background aura (zero-cost native gradient layer without blur filters) */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.16] [background-image:linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [background-size:56px_56px] motion-safe:animate-[grid-drift_22s_linear_infinite]"
-      />
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <div className="absolute -top-[15%] left-1/2 -translate-x-1/2 size-[800px] rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(198,255,71,0.06)_0%,transparent_70%)]" />
+        <div className="absolute top-[35%] -right-[10%] size-[600px] rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(45,212,191,0.04)_0%,transparent_70%)]" />
+        <div className="absolute inset-0 opacity-[0.10] [background-image:linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [background-size:56px_56px]" />
+      </div>
 
       <div className="relative mx-auto flex w-full max-w-[92rem] flex-1 flex-col justify-center px-5 pb-10 pt-16 sm:px-8 lg:px-12">
         <div className="grid items-center gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(16rem,0.95fr)] lg:gap-8">
@@ -181,7 +149,7 @@ export function Hero() {
       </div>
 
       {/* base strip */}
-      <div className="relative border-y border-border bg-background/40 backdrop-blur-sm">
+      <div className="relative border-y border-border bg-background/90">
         <div className="mx-auto flex w-full max-w-[92rem] flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-12">
           <div className="flex items-center gap-3">
             <span className="relative flex size-2">

@@ -329,7 +329,7 @@ export function Projects() {
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-300 group-hover/gallery:opacity-100 bg-background/40 backdrop-blur-xs">
                               <div className="flex items-center gap-2.5 rounded-full border border-primary/40 bg-card/90 px-4 py-2 text-xs font-mono text-foreground backdrop-blur-md shadow-2xl transition-transform duration-300 group-hover/gallery:scale-105">
                                 <Sparkles className="size-3.5 text-primary" />
-                                <span className="font-medium">Open 3D Glass Gallery</span>
+                                <span className="font-medium">Open Gallery Showcase</span>
                                 <Maximize2 className="size-3 text-muted-foreground" />
                               </div>
                             </div>

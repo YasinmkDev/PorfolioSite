@@ -1,18 +1,17 @@
 'use client'
 
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import Image from 'next/image'
 import {
   ChevronLeft,
   ChevronRight,
   ArrowUpRight,
-  Pause,
-  Play,
+  Sparkles,
   Layers,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-interface ProjectFace {
+interface ProjectCard {
   id: string
   num: string
   title: string
@@ -22,9 +21,10 @@ interface ProjectFace {
   image: string
   imageAlt: string
   tag: string
+  baseAngle: number
 }
 
-const PROJECT_FACES: ProjectFace[] = [
+const PROJECT_CARDS: ProjectCard[] = [
   {
     id: 'ledger-ai',
     num: '01',
@@ -35,6 +35,7 @@ const PROJECT_FACES: ProjectFace[] = [
     image: '/projects/ledgerProject/first_image_withScreenShotsAndTextOnRight.png',
     imageAlt: 'Ledger AI Mobile Receipt & Expense App Flow',
     tag: 'AI Mobile',
+    baseAngle: -3.2,
   },
   {
     id: 'reserve-ease',
@@ -46,6 +47,7 @@ const PROJECT_FACES: ProjectFace[] = [
     image: '/projects/bookingProject/first_image_app_screeshots_and_text_on_right_side.png',
     imageAlt: 'ReserveEase Appointment & Schedule App Flow',
     tag: 'Full-Stack',
+    baseAngle: 2.8,
   },
   {
     id: 'marlows-pos',
@@ -57,6 +59,7 @@ const PROJECT_FACES: ProjectFace[] = [
     image: '/projects/orderProject/firstImageToshowInProjectSection.png',
     imageAlt: "Marlow's Dining Platform & Restaurant POS",
     tag: 'POS Dining',
+    baseAngle: -2.2,
   },
   {
     id: 'ocr-engine',
@@ -68,6 +71,7 @@ const PROJECT_FACES: ProjectFace[] = [
     image: '/projects/ledgerProject/imageShowingAiPoweredORC.png',
     imageAlt: 'AI Powered OCR Scanner Interface',
     tag: 'AI Vision',
+    baseAngle: 3.6,
   },
   {
     id: 'mobile-architecture',
@@ -79,272 +83,182 @@ const PROJECT_FACES: ProjectFace[] = [
     image: '/projects/bookingProject/tickets_around_app_open_in phone.png',
     imageAlt: 'Production Cross-Platform Mobile Engineering',
     tag: 'Architecture',
+    baseAngle: -1.6,
   },
 ]
 
-const NUM_FACES = 5
-const ANGLE_STEP = 360 / NUM_FACES // 72 degrees
+const NUM_CARDS = PROJECT_CARDS.length
 
 export function Hero3DPolygon() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const currentRotationRef = useRef(0)
-  const targetRotationRef = useRef(0)
-  const rafRef = useRef<number | null>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
 
-  const [activeFaceIndex, setActiveFaceIndex] = useState(0)
-  const [isAutoSpin, setIsAutoSpin] = useState(true)
-  const [prismWidth, setPrismWidth] = useState(300)
-
-  // Calculate the 3D inradius (distance from center to face):
-  // r = (width / 2) / tan(PI / 5) = (width / 2) / tan(36deg) ≈ width * 0.68819
-  const radius = Math.round((prismWidth / 2) / Math.tan(Math.PI / NUM_FACES))
-
-  // Handle responsive width adjustment
-  useEffect(() => {
-    const updateSize = () => {
-      if (!containerRef.current) return
-      const w = containerRef.current.clientWidth
-      if (w < 380) {
-        setPrismWidth(240)
-      } else if (w < 520) {
-        setPrismWidth(270)
-      } else if (w < 768) {
-        setPrismWidth(290)
-      } else {
-        setPrismWidth(310)
-      }
-    }
-
-    updateSize()
-    window.addEventListener('resize', updateSize)
-    return () => window.removeEventListener('resize', updateSize)
+  const goToCard = useCallback((index: number) => {
+    const normalized = (index % NUM_CARDS + NUM_CARDS) % NUM_CARDS
+    setActiveIndex(normalized)
   }, [])
 
-  // Rotate smoothly to specific face
-  const rotateToFace = useCallback((faceIdx: number) => {
-    const currentAngle = targetRotationRef.current
-    const targetAngle = -faceIdx * ANGLE_STEP
-    // Find shortest modular rotation path
-    const diff = ((targetAngle - currentAngle) % 360 + 540) % 360 - 180
-    targetRotationRef.current = currentAngle + diff
-    setActiveFaceIndex(faceIdx)
-  }, [])
+  const nextCard = useCallback(() => {
+    goToCard(activeIndex + 1)
+  }, [activeIndex, goToCard])
 
-  const nextFace = () => {
-    const nextIdx = (activeFaceIndex + 1) % NUM_FACES
-    rotateToFace(nextIdx)
-  }
+  const prevCard = useCallback(() => {
+    goToCard(activeIndex - 1)
+  }, [activeIndex, goToCard])
 
-  const prevFace = () => {
-    const prevIdx = (activeFaceIndex - 1 + NUM_FACES) % NUM_FACES
-    rotateToFace(prevIdx)
-  }
-
-  // Animation Loop: pure steady rotation without mouse tilt, with smooth navigation interpolation
-  useEffect(() => {
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    let lastStamp = performance.now()
-
-    const animate = (timestamp: number) => {
-      const delta = Math.min((timestamp - lastStamp) / 1000, 0.1)
-      lastStamp = timestamp
-
-      if (isAutoSpin && !reducedMotion) {
-        // Continuous auto-orbit (~28s per full 360 deg)
-        targetRotationRef.current -= delta * 13
-      }
-
-      // Smooth lerp to target angle
-      const diff = targetRotationRef.current - currentRotationRef.current
-      currentRotationRef.current += diff * (isAutoSpin ? 0.08 : 0.12)
-
-      // Calculate active front-facing index for badge highlighting
-      const normalizedAngle = (-currentRotationRef.current % 360 + 360) % 360
-      const closestIdx = Math.round(normalizedAngle / ANGLE_STEP) % NUM_FACES
-      setActiveFaceIndex(closestIdx)
-
-      // Apply CSS transform to the 3D prism group with fixed steady perspective angle (no mouse tilt)
-      if (containerRef.current) {
-        const prismEl = containerRef.current.querySelector<HTMLElement>('.prism-3d-rotor')
-        if (prismEl) {
-          prismEl.style.transform = `rotateX(-6deg) rotateY(${currentRotationRef.current}deg)`
-        }
-      }
-
-      rafRef.current = requestAnimationFrame(animate)
-    }
-
-    rafRef.current = requestAnimationFrame(animate)
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-    }
-  }, [isAutoSpin])
+  const activeProject = PROJECT_CARDS[activeIndex]
 
   return (
-    <div
-      ref={containerRef}
-      className="relative flex h-full min-h-[470px] w-full flex-col items-center justify-center select-none"
-      style={{ perspective: '1100px' }}
-    >
-      {/* Ambient background glow & radial depth */}
+    <div className="relative flex h-full min-h-[500px] sm:min-h-[540px] w-full flex-col items-center justify-center select-none py-2">
+      {/* Ambient background glow & radial depth (zero-cost gradient) */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -inset-10 rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(198,255,71,0.09)_0%,transparent_65%)] blur-2xl"
+        className="pointer-events-none absolute -inset-10 rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(198,255,71,0.07)_0%,transparent_70%)]"
       />
 
-      {/* Holographic Top Ring */}
+      {/* Main Big Stacked Card Display Stage */}
       <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-4 z-0 flex items-center justify-center opacity-40"
+        onClick={nextCard}
+        data-cursor="Next Project"
+        className="group/deck relative flex items-center justify-center w-full max-w-[340px] sm:max-w-[480px] md:max-w-[540px] lg:max-w-[580px] h-[420px] sm:h-[460px] cursor-pointer"
       >
-        <div className="size-56 rounded-full border border-dashed border-primary/40 animate-[spin_40s_linear_infinite]" />
-        <div className="absolute size-44 rounded-full border border-primary/20" />
-        <div className="absolute size-1.5 rounded-full bg-primary shadow-[0_0_8px_var(--primary)]" />
-      </div>
+        {PROJECT_CARDS.map((project, idx) => {
+          // Calculate relative position from active card
+          let offset = (idx - activeIndex + NUM_CARDS) % NUM_CARDS
+          const isTop = offset === 0
+          const isVisible = offset <= 3
 
-      {/* 3D Prism Stage */}
-      <div
-        className="relative flex items-center justify-center"
-        style={{
-          width: `${prismWidth}px`,
-          height: '380px',
-          transformStyle: 'preserve-3d',
-        }}
-      >
-        {/* 3D Rotor Container */}
-        <div
-          className="prism-3d-rotor relative size-full"
-          style={{
-            transformStyle: 'preserve-3d',
-            willChange: 'transform',
-          }}
-        >
-          {PROJECT_FACES.map((project, idx) => {
-            const faceAngle = idx * ANGLE_STEP
-            const isFacing = activeFaceIndex === idx
+          if (!isVisible) return null
 
-            return (
+          // Stacking geometry: each card has its own organic angle, slight vertical offset & scale
+          let translateY = offset === 0 ? 0 : offset * 12
+          let translateX = offset === 0 ? 0 : offset === 1 ? 6 : offset === 2 ? -6 : 8
+          let scale = offset === 0 ? 1 : 1 - offset * 0.045
+          let rotate = isTop ? 0 : project.baseAngle * (1 + offset * 0.25)
+          let opacity = isTop ? 1 : offset === 1 ? 0.8 : offset === 2 ? 0.5 : 0.25
+          let zIndex = NUM_CARDS - offset
+
+          return (
+            <div
+              key={project.id}
+              className={cn(
+                'absolute inset-0 rounded-2xl border transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden shadow-2xl group/card will-change-transform',
+                isTop
+                  ? 'border-primary/60 bg-[#121714] ring-1 ring-primary/40 shadow-[0_24px_50px_rgba(0,0,0,0.85),0_0_26px_rgba(198,255,71,0.18)]'
+                  : 'border-white/10 bg-[#0d120f]/95 hover:border-white/30',
+              )}
+              style={{
+                transform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale}) rotate(${rotate}deg)`,
+                opacity,
+                zIndex,
+                contain: 'paint layout',
+              }}
+            >
+              {/* Iridescent Top Glow Highlight */}
               <div
-                key={project.id}
+                aria-hidden="true"
                 className={cn(
-                  'absolute inset-0 rounded-xl border transition-all duration-500 overflow-hidden backdrop-blur-md',
-                  isFacing
-                    ? 'border-primary/60 bg-card/85 shadow-[0_16px_36px_rgba(0,0,0,0.65),0_0_24px_rgba(198,255,71,0.18)] ring-1 ring-primary/40'
-                    : 'border-border/60 bg-card/50 opacity-60 shadow-[0_8px_20px_rgba(0,0,0,0.5)] grayscale-[30%]',
+                  'pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent transition-opacity duration-300',
+                  isTop ? 'opacity-100' : 'opacity-0',
                 )}
-                style={{
-                  width: `${prismWidth}px`,
-                  height: '380px',
-                  transform: `rotateY(${faceAngle}deg) translateZ(${radius}px)`,
-                  backfaceVisibility: 'hidden',
-                  WebkitBackfaceVisibility: 'hidden',
-                }}
-              >
-                {/* Face Header & Project Tag */}
-                <div className="flex items-center justify-between border-b border-border/80 bg-background/50 px-3.5 py-2.5">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-[0.65rem] font-bold text-primary tracking-widest">
-                      {project.num}
-                    </span>
-                    <span className="h-2 w-px bg-border" />
-                    <span className="text-[0.7rem] font-medium text-muted-foreground uppercase tracking-wider truncate max-w-[140px]">
-                      {project.category}
-                    </span>
-                  </div>
+              />
 
-                  <div className="flex items-center gap-1.5">
+              {/* Card Top Glass Banner Bar */}
+              <div className="flex items-center justify-between border-b border-white/10 bg-[#151c18] px-4 py-2.5">
+                <div className="flex items-center gap-2.5">
+                  <span className="font-mono text-xs font-bold text-primary tracking-wider">
+                    {project.num}
+                  </span>
+                  <span className="h-2.5 w-px bg-white/20" />
+                  <span className="font-mono text-xs font-medium text-foreground/90 uppercase tracking-wider truncate max-w-[180px] sm:max-w-[260px]">
+                    {project.category}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  {isTop && (
                     <span className="flex size-1.5 rounded-full bg-primary motion-safe:animate-pulse" />
-                    <span className="font-mono text-[0.6rem] text-primary/90 uppercase tracking-wider">
-                      {project.tag}
-                    </span>
-                  </div>
+                  )}
+                  <span className="rounded-full bg-primary/10 border border-primary/30 px-2 py-0.5 font-mono text-[0.65rem] text-primary">
+                    {project.tag}
+                  </span>
                 </div>
-
-                {/* Banner Clean Image Area (No overlay arrows or dots) */}
-                <div className="relative h-44 w-full overflow-hidden bg-background/90">
-                  <Image
-                    src={project.image}
-                    alt={project.imageAlt}
-                    fill
-                    sizes="(max-width: 768px) 280px, 320px"
-                    className="object-cover object-top"
-                    priority={idx === 0}
-                  />
-
-                  {/* Subtle Glassmorphic Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-80" />
-                </div>
-
-                {/* Face Content Details */}
-                <div className="flex flex-col justify-between p-3.5 h-[154px]">
-                  <div>
-                    <div className="flex items-baseline justify-between gap-2">
-                      <h4 className="font-serif text-lg font-normal text-foreground group-hover:text-primary transition-colors truncate">
-                        {project.title}
-                      </h4>
-                      <a
-                        href="#work"
-                        className="flex items-center gap-1 text-[0.65rem] font-mono text-muted-foreground hover:text-primary transition-colors shrink-0"
-                      >
-                        Details
-                        <ArrowUpRight className="size-3" />
-                      </a>
-                    </div>
-
-                    <p className="mt-1 line-clamp-2 text-[0.72rem] leading-relaxed text-muted-foreground">
-                      {project.tagline}
-                    </p>
-                  </div>
-
-                  {/* Tech Stack Badges */}
-                  <div className="mt-2 flex flex-wrap gap-1">
-                    {project.stack.slice(0, 3).map((t) => (
-                      <span
-                        key={t}
-                        className="rounded bg-secondary/80 px-1.5 py-0.5 font-mono text-[0.6rem] text-muted-foreground border border-border/50"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                    {project.stack.length > 3 && (
-                      <span className="rounded bg-secondary/50 px-1 py-0.5 font-mono text-[0.55rem] text-muted-foreground/80">
-                        +{project.stack.length - 3}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Active Edge Highlighting Strip */}
-                {isFacing && (
-                  <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent" />
-                )}
               </div>
-            )
-          })}
-        </div>
+
+              {/* High-Definition Big Screenshot Area */}
+              <div className="relative h-[250px] sm:h-[285px] md:h-[305px] w-full overflow-hidden bg-background">
+                <Image
+                  src={project.image}
+                  alt={project.imageAlt}
+                  fill
+                  sizes="(max-width: 768px) 340px, (max-width: 1200px) 540px, 600px"
+                  className="object-cover object-top"
+                  priority={idx === 0}
+                />
+
+                {/* Subtle Gradient Shade */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#121714] via-transparent to-transparent opacity-85" />
+              </div>
+
+              {/* Card Bottom Details & Tech Stack */}
+              <div className="flex flex-col justify-between p-4 h-[130px] sm:h-[135px] bg-[#121714]">
+                <div>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <h4 className="font-serif text-lg sm:text-xl font-normal text-foreground group-hover/deck:text-primary transition-colors truncate">
+                      {project.title}
+                    </h4>
+                    <a
+                      href="#work"
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex items-center gap-1 text-xs font-mono text-muted-foreground hover:text-primary transition-colors shrink-0"
+                    >
+                      Inspect
+                      <ArrowUpRight className="size-3.5" />
+                    </a>
+                  </div>
+
+                  <p className="mt-1 line-clamp-1 sm:line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                    {project.tagline}
+                  </p>
+                </div>
+
+                {/* Tech Stack Badges */}
+                <div className="flex flex-wrap gap-1.5">
+                  {project.stack.map((t) => (
+                    <span
+                      key={t}
+                      className="rounded bg-secondary/80 px-2 py-0.5 font-mono text-[0.65rem] text-muted-foreground border border-border/50"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )
+        })}
       </div>
 
-      {/* Bottom Navigation with Project Names & Rotation Controls */}
-      <div className="mt-7 flex flex-col items-center gap-3 z-10">
+      {/* Bottom Navigation with Project Chips & Arrow Controls */}
+      <div className="mt-7 flex flex-col items-center gap-3 z-10 w-full max-w-[580px]">
         {/* Project Name Chips & Prev/Next Arrows */}
-        <div className="flex items-center gap-1.5 rounded-full border border-border/80 bg-card/75 p-1 backdrop-blur-md shadow-lg">
+        <div className="flex items-center gap-1.5 rounded-full border border-border/80 bg-card/95 p-1 shadow-lg">
           <button
             type="button"
-            onClick={prevFace}
-            aria-label="Rotate to previous project"
+            onClick={prevCard}
+            aria-label="Previous project"
             className="flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground active:scale-95 cursor-pointer"
           >
             <ChevronLeft className="size-3.5" />
           </button>
 
           <div className="flex items-center gap-1 px-1">
-            {PROJECT_FACES.map((p, i) => {
-              const isCurrent = activeFaceIndex === i
+            {PROJECT_CARDS.map((p, i) => {
+              const isCurrent = activeIndex === i
               return (
                 <button
                   key={p.id}
                   type="button"
-                  onClick={() => rotateToFace(i)}
+                  onClick={() => goToCard(i)}
                   className={cn(
                     'relative flex h-6.5 items-center gap-1.5 rounded-full px-2.5 font-mono text-[0.65rem] transition-all duration-300 cursor-pointer',
                     isCurrent
@@ -361,40 +275,26 @@ export function Hero3DPolygon() {
 
           <button
             type="button"
-            onClick={nextFace}
-            aria-label="Rotate to next project"
+            onClick={nextCard}
+            aria-label="Next project"
             className="flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground active:scale-95 cursor-pointer"
           >
             <ChevronRight className="size-3.5" />
           </button>
         </div>
 
-        {/* Play / Pause Orbit Status Controls */}
-        <div className="flex items-center gap-4 text-muted-foreground font-mono text-[0.65rem]">
+        {/* Status Indicator */}
+        <div className="flex items-center gap-3 text-muted-foreground font-mono text-[0.65rem]">
           <div className="flex items-center gap-1.5">
-            <Layers className="size-3 text-primary" />
-            <span>3D Pentagon Showcase</span>
+            <Sparkles className="size-3 text-primary" />
+            <span className="text-foreground/90 font-medium">Featured Stack</span>
           </div>
 
           <span className="text-border">|</span>
 
-          <button
-            type="button"
-            onClick={() => setIsAutoSpin(!isAutoSpin)}
-            className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors cursor-pointer"
-          >
-            {isAutoSpin ? (
-              <>
-                <Pause className="size-2.5 text-primary" />
-                <span>Orbiting</span>
-              </>
-            ) : (
-              <>
-                <Play className="size-2.5" />
-                <span>Paused</span>
-              </>
-            )}
-          </button>
+          <span className="text-muted-foreground">
+            {`[0${activeIndex + 1}/0${NUM_CARDS}] Click card or chips to cycle`}
+          </span>
         </div>
       </div>
     </div>

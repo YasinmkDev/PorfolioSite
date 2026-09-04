@@ -7,11 +7,12 @@ import { Hero } from '@/components/hero'
 import { Preloader } from '@/components/preloader'
 import { Projects } from '@/components/projects'
 import { SiteNav } from '@/components/site-nav'
+import { SmoothScroll } from '@/components/smooth-scroll'
 import { Stack } from '@/components/stack'
 
 export default function Page() {
   return (
-    <>
+    <SmoothScroll>
       <Preloader />
       <CustomCursor />
       <SiteNav />
@@ -24,6 +25,6 @@ export default function Page() {
         <Availability />
         <Contact />
       </main>
-    </>
+    </SmoothScroll>
   )
 }
