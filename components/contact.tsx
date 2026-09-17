@@ -352,6 +352,17 @@ export function Contact() {
                 </span>
               </MagneticLink>
 
+              <a
+                href={SITE.upwork}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-cursor="Upwork"
+                className="group inline-flex items-center gap-2 rounded-md border border-border bg-card/60 px-5 py-4 text-sm font-medium text-foreground transition-colors duration-300 hover:border-primary/60 hover:text-primary"
+              >
+                Upwork Profile
+                <ArrowUpRight className="size-4 text-primary transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+
               <button
                 type="button"
                 onClick={copy}
@@ -402,6 +413,15 @@ export function Contact() {
             </span>
           </div>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <a
+              href={SITE.upwork}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="Upwork"
+              className="text-sm text-muted-foreground transition-colors duration-300 hover:text-primary"
+            >
+              Upwork
+            </a>
             <a
               href={`mailto:${SITE.email}`}
               data-cursor=""

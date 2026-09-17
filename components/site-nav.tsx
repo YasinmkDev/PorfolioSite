@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Menu, X } from 'lucide-react'
+import { ArrowUpRight, Menu, X } from 'lucide-react'
 import { SITE } from '@/lib/site'
 import { cn } from '@/lib/utils'
 
@@ -113,6 +113,17 @@ export function SiteNav() {
 
         <div className="flex items-center gap-2">
           <a
+            href={SITE.upwork}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-cursor="Upwork"
+            className="group hidden items-center gap-1.5 rounded-sm border border-border/80 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground sm:inline-flex"
+          >
+            Upwork
+            <ArrowUpRight className="size-3 text-primary transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </a>
+
+          <a
             href="#contact"
             data-cursor="Let's talk"
             className="group relative hidden overflow-hidden rounded-sm border border-primary/40 px-4 py-2 text-sm font-medium text-primary transition-colors duration-500 hover:text-primary-foreground sm:block"
@@ -185,6 +196,16 @@ export function SiteNav() {
           >
             <span className="size-1.5 rounded-full bg-primary-foreground" />
             Start a project
+          </a>
+          <a
+            href={SITE.upwork}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setOpen(false)}
+            className="flex items-center justify-center gap-2 rounded-sm border border-border px-4 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary/50 hover:text-primary"
+          >
+            Hire on Upwork
+            <ArrowUpRight className="size-4 text-primary" />
           </a>
           <a
             href={`mailto:${SITE.email}`}

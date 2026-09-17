@@ -5,6 +5,7 @@ import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { Hero3DPolygon } from '@/components/hero-3d-polygon'
 import { Marquee } from '@/components/marquee'
 import { useSiteLoaded } from '@/hooks/use-site-loaded'
+import { SITE } from '@/lib/site'
 
 const marquee = [
   'React Native',
@@ -142,6 +143,16 @@ export function Hero() {
               className="group flex items-center gap-2 rounded-sm border border-border px-6 py-3.5 text-sm font-medium transition-colors duration-500 hover:border-primary/50 hover:text-primary"
             >
               Start a project
+              <ArrowUpRight className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </a>
+            <a
+              href={SITE.upwork}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="Upwork"
+              className="group flex items-center gap-2 rounded-sm border border-border/80 bg-secondary/30 px-5 py-3.5 text-sm font-medium transition-colors duration-500 hover:border-primary/50 hover:text-primary"
+            >
+              Upwork Profile
               <ArrowUpRight className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>
           </div>

@@ -49,7 +49,10 @@ export function StructuredData() {
         description:
           'Software Engineer specializing in cross-platform mobile app development with React Native, React, Next.js, TypeScript, Node.js, and REST APIs.',
         url: 'https://yasinmalak.dev',
-        email: 'hello@yasinmalak.dev',
+        email: 'yasinmk604@gmail.com',
+        sameAs: [
+          'https://www.upwork.com/freelancers/~0172d68b47fdd1005e?viewMode=1',
+        ],
         knowsLanguage: ['English', 'Urdu'],
         alumniOf: {
           '@type': 'EducationalOrganization',
@@ -134,6 +137,39 @@ export function StructuredData() {
             position: 1,
             item: {
               '@type': 'SoftwareApplication',
+              name: 'CopySprint',
+              operatingSystem: 'Web, Cloud',
+              applicationCategory: 'MarketingApplication',
+              description:
+                'A high-velocity AI advertising engine that converts a single product brief or URL into 5 channel-native, ready-to-publish ad packages in two seconds with Google RSA scoring and 1-click batch export.',
+              softwareRequirements: 'Next.js, React, TypeScript, AI Prompt Pipeline, Tailwind CSS',
+              author: {
+                '@id': 'https://yasinmalak.dev/#person',
+              },
+            },
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            item: {
+              '@type': 'SoftwareApplication',
+              name: 'FastBill',
+              operatingSystem: 'Web, Cloud',
+              applicationCategory: 'BusinessApplication',
+              description:
+                'A modern financial micro-SaaS engineered to solve invoicing friction for freelancers and boutique agencies with a 10-second promise: natural-language line input, instant 300 DPI vector PDF preview, and one-click Stripe QR checkout.',
+              softwareRequirements:
+                'Next.js 14, TypeScript, Supabase PostgreSQL, Tailwind CSS, Stripe QR Checkout, 300 DPI Vector PDF',
+              author: {
+                '@id': 'https://yasinmalak.dev/#person',
+              },
+            },
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            item: {
+              '@type': 'SoftwareApplication',
               name: 'Ledger AI',
               operatingSystem: 'iOS, Android',
               applicationCategory: 'FinanceApplication',
@@ -147,7 +183,7 @@ export function StructuredData() {
           },
           {
             '@type': 'ListItem',
-            position: 2,
+            position: 4,
             item: {
               '@type': 'SoftwareApplication',
               name: 'ReserveEase',
@@ -163,7 +199,7 @@ export function StructuredData() {
           },
           {
             '@type': 'ListItem',
-            position: 3,
+            position: 5,
             item: {
               '@type': 'SoftwareApplication',
               name: "Marlow's Dining Engine & POS",

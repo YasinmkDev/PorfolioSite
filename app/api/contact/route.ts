@@ -109,7 +109,7 @@ async function deliver(input: {
   const resendKey = process.env.RESEND_API_KEY?.trim()
   if (resendKey) {
     const from =
-      process.env.CONTACT_FROM_EMAIL?.trim() || 'Yasin Malak <beth.t@example.com>'
+      process.env.CONTACT_FROM_EMAIL?.trim() || 'Yasin Malak <yasinmk604@gmail.com>'
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {

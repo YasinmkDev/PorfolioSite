@@ -27,6 +27,138 @@ type Project = {
 
 const projects: Project[] = [
   {
+    id: 'copysprint',
+    name: 'CopySprint',
+    kind: 'High-Velocity AI Advertising Engine · Full Stack Web',
+    year: '2025',
+    summary:
+      'A high-velocity AI advertising engine that converts a single product brief or URL into 5 channel-native, ready-to-publish ad packages in two seconds — complete with built-in Google RSA strength scoring and 1-click batch export.',
+    problem:
+      'Performance marketers and growth teams waste hours adapting product copy across fragmented ad platforms, resulting in bland copy-pasting or generic AI hallucinations. CopySprint converts raw product specs into distinct, platform-optimized formats with zero prompt engineering.',
+    role: 'Lead Full-Stack Architect & AI Systems Engineer. Designed the 1-to-5 native ad synthesis pipeline, streaming UI with instant TTFT, responsive multi-channel preview matrix, algorithmic Google RSA quality rubric, and batch export integrations.',
+    stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'AI Synthesis Pipeline', 'Zustand', 'Lucide'],
+    challenges: [
+      {
+        title: '1-to-5 Native Ad Synthesis Engine',
+        body: 'Synthesized 5 distinct channel-native formats in a single pass: Meta feed copy (hook, description, headline, CTA), Google Search RSA (3 headlines, 2 descriptions), TikTok/Reels 9:16 3-scene video storyboard with visual directions & voiceover hooks, direct email (A/B subject lines & body), and high-converting landing page hero copy.',
+      },
+      {
+        title: 'Algorithmic Google RSA Ad Strength Scoring (90+/100)',
+        body: 'Engineered a real-time scoring engine that evaluates headline diversity, keyword density, and character limits to accurately predict and achieve 90+/100 Google Ad Strength before publishing.',
+      },
+      {
+        title: '1-Click Batch Export & Workflow Integration',
+        body: 'Designed multi-format export pipelines enabling growth teams to seamlessly push approved ad sets directly to CSV, JSON, Make, and Zapier webhook workflows.',
+      },
+    ],
+    outcome:
+      'A production-ready growth marketing engine delivering 5 platform-native ad packages in under two seconds, empowering performance teams to launch high-CTR campaigns at scale.',
+    slides: [
+      {
+        src: '/projects/AdsGenerationWebApp/screen1.png',
+        alt: 'CopySprint AI Advertising Engine Overview',
+        title: 'CopySprint Platform Overview',
+        caption:
+          'Instant 1-to-5 ad generation: turning a single product brief into Meta feed copy, Google Search RSA, and TikTok video scripts in 2 seconds.',
+        tag: 'Platform Overview',
+      },
+      {
+        src: '/projects/AdsGenerationWebApp/screen2.png',
+        alt: 'Zero Prompt Engineering & Multi-Channel Formats',
+        title: 'Zero Prompt Engineering & Live Ad Matrix',
+        caption:
+          'Interactive multi-channel workspace with live preview, built-in Google RSA 94/100 scoring, and direct export to CSV & Zapier.',
+        tag: 'Multi-Channel Matrix',
+      },
+      {
+        src: '/projects/AdsGenerationWebApp/screen3.png',
+        alt: 'High-Velocity Streaming Generation Engine',
+        title: 'High-Velocity Ad Engine & Quality Metrics',
+        caption:
+          'Sub-second streaming ad generation with 42ms TTFT, automated quality verification, and platform compliance checks.',
+        tag: 'Streaming Engine',
+      },
+      {
+        src: '/projects/AdsGenerationWebApp/screen4.png',
+        alt: 'Batch Export & Native Ad Pipeline',
+        title: '1-Click Workflow Export & History',
+        caption:
+          'Native ad pipeline with 1-click batch export to CSV, JSON, Make, and Zapier webhooks, complete with run history and mobile review.',
+        tag: 'Workflow Automation',
+      },
+    ],
+  },
+  {
+    id: 'fastbill',
+    name: 'FastBill',
+    kind: 'Financial Micro-SaaS & Invoicing Studio · Full Stack',
+    year: '2025',
+    summary:
+      'A modern financial micro-SaaS engineered to solve invoicing friction for freelancers and boutique agencies with a 10-second promise: natural-language line input, instant 300 DPI vector PDF preview, and one-click Stripe QR checkout.',
+    problem:
+      'Traditional platforms like QuickBooks require 15+ clicks and tedious onboarding just to bill a client. Freelancers, consultants, and boutique agencies needed a zero-friction billing studio that transforms casual line inputs into print-ready institutional invoices in seconds.',
+    role: 'Lead Product Architect & Full-Stack Engineer. Designed the complete end-to-end journey—from 90-second onboarding to a modular design system, natural-language parsing engine, vector PDF generator, and Supabase RLS backend.',
+    stack: [
+      'Next.js 14 (App Router)',
+      'TypeScript',
+      'Supabase (PostgreSQL & RLS)',
+      'Tailwind CSS',
+      'Stripe QR Checkout',
+      '300 DPI Vector PDF Engine',
+      'SendGrid API',
+    ],
+    challenges: [
+      {
+        title: 'Natural-Language Quick Line Parser',
+        body: 'Engineered an on-the-fly syntax parser converting casual billing inputs (e.g., "3 hours × $85 Frontend Architecture") into typed line items, rates, quantities, and automated subtotal/tax calculations instantly.',
+      },
+      {
+        title: '300 DPI Print-Ready Vector PDF Engine',
+        body: 'Built a dual-render pipeline capable of displaying a live real-time web canvas while compiling crisp 300 DPI print-ready A4 PDFs with embedded Stripe dynamic payment QR codes.',
+      },
+      {
+        title: 'Client Directory & Adaptive Billing Engine',
+        body: 'Architected multi-client ledger profiles with custom hourly presets, Net-14/30 term rules, automated follow-up reminders, and 5 institutional-grade layout templates.',
+      },
+    ],
+    outcome:
+      'A production-ready financial micro-SaaS cutting invoice creation time to under 10 seconds, accelerating client settlement with instant Stripe QR checkouts and seamless 90-second onboarding.',
+    slides: [
+      {
+        src: '/projects/invoiceGeneratorwebApp/screen3.png',
+        alt: 'FastBill 10-Second Invoice Studio & Live 300 DPI PDF Engine',
+        title: '10-Second Invoicing Studio & Live Canvas',
+        caption:
+          'Natural-language line parser ("3 hours × $85"), live print-accurate A4 canvas, and instant subtotal calculations with Stripe QR checkout.',
+        tag: 'Core Studio',
+      },
+      {
+        src: '/projects/invoiceGeneratorwebApp/screen1.png',
+        alt: 'FastBill Adaptive Billing Engine & Client Management',
+        title: 'Client Ledger & Invoice Templates Gallery',
+        caption:
+          '5 pre-built institutional layout presets, configurable client hourly rates, Net payment terms, and automated payment reminders.',
+        tag: 'Billing Engine',
+      },
+      {
+        src: '/projects/invoiceGeneratorwebApp/screen4.png',
+        alt: 'FastBill 90-Second Onboarding & User Flow',
+        title: '90-Second Onboarding & Setup Journey',
+        caption:
+          'Zero-friction contractor onboarding: one-click OAuth auth, business profile defaults, and first invoice generated in under 90 seconds.',
+        tag: 'User Journey',
+      },
+      {
+        src: '/projects/invoiceGeneratorwebApp/screen2.png',
+        alt: 'FastBill Production Full-Stack Architecture & Micro-SaaS',
+        title: 'Production Full-Stack Architecture',
+        caption:
+          'Next.js 14 App Router, Supabase PostgreSQL with Row Level Security (RLS), 300 DPI vector PDF engine, and SendGrid transactional delivery.',
+        tag: 'Architecture',
+      },
+    ],
+  },
+  {
     id: 'ledger-ai',
     name: 'Ledger AI',
     kind: 'AI Receipt & Expense Scanner · React Native',
@@ -202,7 +334,7 @@ export function Projects() {
       <SectionHeading
         index="01"
         label="Selected work"
-        title="Four projects, four kinds of proof."
+        title="Five projects, five kinds of proof."
         accentWords={['proof']}
       />
 

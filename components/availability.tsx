@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { ArrowUpRight } from 'lucide-react'
 import { Marquee } from '@/components/marquee'
 import { Reveal } from '@/components/reveal'
+import { SITE } from '@/lib/site'
 
 const services = [
   {
@@ -45,7 +46,17 @@ export function Availability() {
               Three ways to work together.
             </p>
           </Reveal>
-          <Reveal delay={120} className="md:col-span-5 md:justify-self-end">
+          <Reveal delay={120} className="flex flex-wrap items-center gap-3 md:col-span-5 md:justify-self-end">
+            <a
+              href={SITE.upwork}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="Upwork"
+              className="group inline-flex items-center gap-2 rounded-sm border border-border bg-card/60 px-5 py-4 text-sm font-medium text-foreground transition-colors duration-500 hover:border-primary/60 hover:text-primary"
+            >
+              Hire on Upwork
+              <ArrowUpRight className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </a>
             <a
               href="#contact"
               data-cursor="Let's talk"
