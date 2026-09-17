@@ -51,7 +51,7 @@ export function StructuredData() {
         url: 'https://yasinmalak.dev',
         email: 'yasinmk604@gmail.com',
         sameAs: [
-          'https://www.upwork.com/freelancers/~0172d68b47fdd1005e?viewMode=1',
+          'https://www.upwork.com/freelancers/yasinmkdev',
         ],
         knowsLanguage: ['English', 'Urdu'],
         alumniOf: {
