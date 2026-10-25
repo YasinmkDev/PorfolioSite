@@ -22,10 +22,219 @@ type Project = {
   stack: string[]
   challenges: { title: string; body: string }[]
   outcome: string
+  repo?: string
   slides: GallerySlide[]
 }
 
 const projects: Project[] = [
+  {
+    id: 'waveform',
+    name: 'Waveform',
+    kind: 'Spotify-System Clone · React Native',
+    year: '2026',
+    summary:
+      'A study of Spotify’s product system, rebuilt from scratch in React Native + Expo — not a skin, a working system: real playback, a real queue, and personalization honestly computed from the listener’s own behavior on-device.',
+    problem:
+      'Most clone builds fake the product: static screens with a play button that plays nothing. Waveform rebuilds the system underneath — engine, queue, mixes, stats — so every surface reacts to what the listener actually does.',
+    role: 'Solo designer & developer. Built the audio engine, queue semantics, mix generation, stats/streak engine, and all 12+ screens, with a motion pass and a UI polish pass on top.',
+    stack: ['React Native', 'Expo SDK 57', 'TypeScript', 'Zustand', 'expo-audio', 'Reanimated 4', 'FlashList'],
+    challenges: [
+      {
+        title: 'Real playback engine',
+        body: 'Single audio engine with queue, shuffle that keeps the current track pinned, repeat off/all/one, scrubber, transition fades, and error skip-recovery with a circuit breaker.',
+      },
+      {
+        title: 'On-device personalization',
+        body: 'Weekly mixes, taste profiles, listening stats, and streaks computed from the user’s own play log — no backend, no fake data. Taste signals weight onboarding picks, likes, counted plays, and skips.',
+      },
+      {
+        title: 'Premium gates that are real',
+        body: 'Free vs Premium is enforced, not cosmetic: downloads, crossfade caps, and the home ad all change with the plan, behind an honest demo paywall.',
+      },
+    ],
+    outcome:
+      'A complete, working music system: onboarding with taste picks, Home with resume contexts and a Weekly Mix hero, search, library, collections, queue, Now Playing, profile stats, and settings — all running on real state.',
+    repo: 'https://github.com/YasinmkDev/waveform',
+    slides: [
+      {
+        src: '/projects/waveform/home.png',
+        alt: 'Waveform home screen with Weekly Mix hero and resume grid',
+        title: 'Waveform Home',
+        caption: 'Weekly Mix hero, resume grid from real play contexts, and the streak card — all driven by the on-device play log.',
+        tag: 'Home',
+      },
+    ],
+  },
+  {
+    id: 'findit',
+    name: 'FindIt — Smart Item Finder',
+    kind: 'AI Item Finder · React Native',
+    year: '2026',
+    summary:
+      'Snap it, stash it, find it in one word. A React Native + Expo app that solves “where did I put that?” — photograph an item, AI analyses it, note where you kept it, and later a single search word brings the exact photo back.',
+    problem:
+      'People lose everyday items and remember what they look like, not what they named a file. FindIt turns a photo into searchable words, so the thing you remember is the thing you search by.',
+    role: 'Solo designer & developer. Built the capture flow, Gemini analysis client, scan queue, search, places, and the freemium paywall.',
+    stack: ['React Native', 'Expo', 'TypeScript', 'Google Gemini API', 'AsyncStorage'],
+    challenges: [
+      {
+        title: 'AI photo analysis',
+        body: 'Gemini analyses each photo into objects, colours, descriptions, and tags — the vocabulary the search runs on.',
+      },
+      {
+        title: 'Scan queue that never loses a photo',
+        body: 'Photos save first as pending cards and AI scans serially, oldest-first. One failure never blocks the queue, failed scans get a retry pill, and the queue resumes after the app closes.',
+      },
+    ],
+    outcome:
+      'A working finder: 12-item sample set, guest mode, places, import, settings, and a paywall — with pending cards visible but not text-searchable until scanned.',
+    repo: 'https://github.com/YasinmkDev/findit-smart-item-finder',
+    slides: [
+      {
+        src: '/projects/findit/home.png',
+        alt: 'FindIt home grid of stashed items',
+        title: 'FindIt Home',
+        caption: 'The stash grid: photographed items with AI tags, ready to be found by a single search word.',
+        tag: 'Home',
+      },
+    ],
+  },
+  {
+    id: 'fittrack',
+    name: 'FitTrack — APEX Studio Lab',
+    kind: 'Gym Management SaaS · React Native',
+    year: '2026',
+    summary:
+      'Run the gym from your phone: members, plans, attendance, classes, and fee collection — built for owners who currently run on registers, spreadsheets, and WhatsApp groups.',
+    problem:
+      'Small-to-mid gyms track everything on paper and chat threads. FitTrack gives the owner one phone workflow: members and plans, then attendance and classes, then fee collection.',
+    role: 'Solo designer & developer. Recreated the APEX reference design exactly, then built the Hub, Roster, Schedule, and Leaderboard tabs plus hidden Join and Payments routes, member detail, and the Pro paywall.',
+    stack: ['React Native', 'Expo SDK 57', 'TypeScript', 'Reanimated'],
+    challenges: [
+      {
+        title: 'Owner workflow, modelled on real gym software',
+        body: 'The flow follows established gym tools (Gymdesk, Mindbody): retention radar, milestones, athlete spotlight, and a week view from Monday to Saturday.',
+      },
+      {
+        title: 'Fluid navigation and demo auth',
+        body: 'A floating pill tab bar with a spring active state, and an animated demo auth screen (any valid email + 6-character password, nothing stored).',
+      },
+    ],
+    outcome:
+      'A complete gym SaaS shell: Hub stats, roster with athlete cards, class schedule, leaderboard, join flow, payments, member detail, and an APEX Pro paywall.',
+    repo: 'https://github.com/YasinmkDev/fittrack',
+    slides: [
+      {
+        src: '/projects/fittrack/hub.png',
+        alt: 'FitTrack APEX Hub with stats and retention radar',
+        title: 'FitTrack Hub',
+        caption: 'Hub stats, Retention Radar, milestones, and the athlete spotlight — the owner’s morning view.',
+        tag: 'Hub',
+      },
+    ],
+  },
+  {
+    id: 'mobilebazaar',
+    name: 'MobileBazaar',
+    kind: 'Mobile Phone E-Commerce · Final Year Project',
+    year: '2026',
+    summary:
+      'A full-stack, single-vendor mobile phone e-commerce store built for the Pakistan market: storefront, guest checkout, order tracking, and a complete admin operations console.',
+    problem:
+      'Buying a phone in Pakistan means PTA approval, warranty trust, EMI math, and cash on delivery — none of which a generic store template handles. MobileBazaar is built around those realities.',
+    role: 'Solo full-stack developer (FYP). Built the storefront, cart/checkout/tracking, admin console, Supabase integration, and the SIGNAL redesign.',
+    stack: ['Next.js 15', 'TypeScript', 'Supabase (PostgreSQL, Auth, RLS)'],
+    challenges: [
+      {
+        title: 'Pakistan-market commerce',
+        body: 'PKR pricing, PTA-approved badges, EMI plans, and cash-on-delivery as the primary payment method, with simulated JazzCash/EasyPaisa.',
+      },
+      {
+        title: 'Guest checkout and tracking',
+        body: 'Checkout works without an account, orders are tracked on-device, and the admin console covers KPIs, charts, low-stock meters, order chips, and device add/edit with image upload.',
+      },
+    ],
+    outcome:
+      'A complete store: 25-phone catalogue, faceted shop, product pages with variants, cart, checkout, tracking, and an admin ops console — plus a header CSS defect found by screenshots and fixed in the same pass.',
+    repo: 'https://github.com/YasinmkDev/mobilebazaar-fyp',
+    slides: [
+      {
+        src: '/projects/mobilebazaar/home-desktop.png',
+        alt: 'MobileBazaar home page with hero and trust bar',
+        title: 'MobileBazaar Home',
+        caption: 'SIGNAL design: black hero, red trust marquee, and honest PKR pricing with PTA and warranty badges.',
+        tag: 'Home',
+      },
+    ],
+  },
+  {
+    id: 'swift-courier',
+    name: 'Swift Courier',
+    kind: 'Food Delivery & Courier · React Native',
+    year: '2026',
+    summary:
+      'A high-performance, production-style React Native delivery application: a multi-vertical marketplace for food, grocery, and same-day package courier, with live courier tracking.',
+    problem:
+      'Delivery apps live or die on the tracking moment. Swift Courier simulates the whole journey — placed, confirmed, preparing, picked up, out for delivery, delivered — so the tracking experience works with or without a backend.',
+    role: 'Solo designer & developer. Built the marketplace, product customization, persistent cart and theme, tracking simulation, and demo controls.',
+    stack: ['React Native', 'Expo SDK 57', 'TypeScript', 'Zustand', 'MapLibre', 'Reanimated', 'Bottom Sheet', 'Supabase Realtime'],
+    challenges: [
+      {
+        title: 'Multi-vertical marketplace',
+        body: 'Food, grocery, and package services in one catalogue, with required and optional modifier groups, live pricing calculation, and quantity controls.',
+      },
+      {
+        title: 'Offline simulation engine',
+        body: 'Works immediately without internet or backend setup: couriers move along real waypoints with live status transitions, and Supabase Realtime connects only if credentials are present.',
+      },
+    ],
+    outcome:
+      'A complete delivery app: home, categories, product detail, cart, checkout, live tracking with a demo status accelerator, orders, activity, account, addresses, dietary, favorites, and support.',
+    repo: 'https://github.com/YasinmkDev/Restaurant-Order-App',
+    slides: [
+      {
+        src: '/projects/swift-courier/home.png',
+        alt: 'Swift Courier home with delivery card and categories',
+        title: 'Swift Courier Home',
+        caption: 'Delivery card, categories, and restaurant discovery — the marketplace front door.',
+        tag: 'Home',
+      },
+    ],
+  },
+  {
+    id: 'hospitality-panel',
+    name: 'Hospitality Admin Panel',
+    kind: 'Hospitality Admin Dashboard · React',
+    year: '2026',
+    summary:
+      'A modern, full-featured administration dashboard for hospitality management: floors, rooms, beds, reservations, and housekeeping in one unified interface.',
+    problem:
+      'Hotel operations split across registers and spreadsheets: which rooms are free, which beds are made, which reservations need attention. This panel unifies them into one dashboard.',
+    role: 'Solo designer & developer. Built the full route set — dashboard, floors, rooms, beds, room types, features, products, rates, seasons, reservations, housekeeping, reminders, and settings — with auth screens.',
+    stack: ['React', 'TypeScript', 'Tailwind CSS'],
+    challenges: [
+      {
+        title: 'Twenty routes, one system',
+        body: 'Dashboard, rooms and room layout, beds, room types and features, products, rates, seasons, reservations (including do-not-rent), housekeeping, reminders, and settings — all captured on desktop and mobile.',
+      },
+      {
+        title: 'Demo sandbox fallback',
+        body: 'With no backend credentials configured, the app falls back to its own built-in sample dataset, so every screen renders real content instead of an error state.',
+      },
+    ],
+    outcome:
+      'A complete operations dashboard: 44% occupancy, 28 rooms, and revenue on the home view, with every management surface reachable and captured.',
+    repo: 'https://github.com/YasinmkDev/hospitality-Admin-Panel',
+    slides: [
+      {
+        src: '/projects/hospitality/dashboard-desktop.png',
+        alt: 'Hospitality admin dashboard with occupancy and revenue',
+        title: 'Hospitality Dashboard',
+        caption: 'Occupancy, rooms, and revenue at a glance — the operations overview.',
+        tag: 'Dashboard',
+      },
+    ],
+  },
   {
     id: 'copysprint',
     name: 'CopySprint',
@@ -334,7 +543,7 @@ export function Projects() {
       <SectionHeading
         index="01"
         label="Selected work"
-        title="Five projects, five kinds of proof."
+        title="Eleven projects, eleven kinds of proof."
         accentWords={['proof']}
       />
 
@@ -510,14 +719,27 @@ export function Projects() {
                           </p>
                         </div>
 
-                        <a
-                          href="#contact"
-                          data-cursor="Ask"
-                          className="group/link inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors duration-500 hover:text-primary"
-                        >
-                          Ask me about this project
-                          <ArrowUpRight className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
-                        </a>
+                        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                          <a
+                            href="#contact"
+                            data-cursor="Ask"
+                            className="group/link inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors duration-500 hover:text-primary"
+                          >
+                            Ask me about this project
+                            <ArrowUpRight className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
+                          </a>
+                          {project.repo && (
+                            <a
+                              href={project.repo}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="group/link inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors duration-500 hover:text-primary"
+                            >
+                              View on GitHub
+                              <ArrowUpRight className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
+                            </a>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
