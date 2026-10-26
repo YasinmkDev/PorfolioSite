@@ -23,12 +23,15 @@ type Project = {
   challenges: { title: string; body: string }[]
   outcome: string
   repo?: string
+  /** Primary slide is a portrait phone screenshot — preview renders it as a phone, not a cropped landscape box. */
+  portrait?: boolean
   slides: GallerySlide[]
 }
 
 const projects: Project[] = [
   {
     id: 'waveform',
+    portrait: true,
     name: 'Waveform',
     kind: 'Spotify-System Clone · React Native',
     year: '2026',
@@ -67,6 +70,7 @@ const projects: Project[] = [
   },
   {
     id: 'findit',
+    portrait: true,
     name: 'FindIt — Smart Item Finder',
     kind: 'AI Item Finder · React Native',
     year: '2026',
@@ -101,6 +105,7 @@ const projects: Project[] = [
   },
   {
     id: 'fittrack',
+    portrait: true,
     name: 'FitTrack — APEX Studio Lab',
     kind: 'Gym Management SaaS · React Native',
     year: '2026',
@@ -169,6 +174,7 @@ const projects: Project[] = [
   },
   {
     id: 'swift-courier',
+    portrait: true,
     name: 'Swift Courier',
     kind: 'Food Delivery & Courier · React Native',
     year: '2026',
@@ -652,19 +658,41 @@ export function Projects() {
                         {isOpen ? (
                           <div
                             onClick={() => openGallery(project, 0)}
-                            className="group/gallery relative aspect-[16/10] w-full overflow-hidden rounded-sm border border-border bg-card cursor-pointer"
+                            className={cn(
+                              'group/gallery relative w-full overflow-hidden rounded-sm border border-border cursor-pointer',
+                              project.portrait
+                                ? 'flex h-[420px] items-center justify-center bg-[#0d120f] md:h-[460px]'
+                                : 'aspect-[16/10] bg-card',
+                            )}
                           >
-                            <Image
-                              src={primarySlide.src}
-                              alt={primarySlide.alt}
-                              fill
-                              sizes="(min-width: 768px) 45vw, 100vw"
-                              priority={i === 0}
-                              className="object-cover object-top transition-all duration-700 ease-[var(--ease-out-expo)] group-hover/gallery:scale-105"
-                            />
+                            {project.portrait ? (
+                              /* Portrait phone shot: a phone frame sized by height, so the
+                                 whole screen shows instead of a blown-up top crop. */
+                              <div className="relative h-[340px] aspect-[9/19.5] overflow-hidden rounded-[1.6rem] border border-white/15 bg-[#121714] shadow-2xl transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover/gallery:scale-[1.03] md:h-[390px]">
+                                <Image
+                                  src={primarySlide.src}
+                                  alt={primarySlide.alt}
+                                  fill
+                                  sizes="200px"
+                                  priority={i === 0}
+                                  className="object-cover"
+                                />
+                              </div>
+                            ) : (
+                              <Image
+                                src={primarySlide.src}
+                                alt={primarySlide.alt}
+                                fill
+                                sizes="(min-width: 768px) 45vw, 100vw"
+                                priority={i === 0}
+                                className="object-cover object-top transition-all duration-700 ease-[var(--ease-out-expo)] group-hover/gallery:scale-105"
+                              />
+                            )}
 
-                            {/* Dark shade gradient */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-80" />
+                            {/* Dark shade gradient — landscape only; the portrait phone already sits on a dark stage */}
+                            {!project.portrait && (
+                              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-80" />
+                            )}
 
                             {/* Floating Glassmorphic Click Prompt */}
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-300 group-hover/gallery:opacity-100 bg-background/40 backdrop-blur-xs">
@@ -687,11 +715,11 @@ export function Projects() {
                             </div>
 
                             {/* Bottom Caption */}
-                            <div className="absolute bottom-2.5 inset-x-3 flex items-center justify-between text-muted-foreground pointer-events-none">
-                              <span className="label-mono text-foreground/90 truncate max-w-[280px]">
+                            <div className="absolute bottom-2.5 inset-x-3 flex items-center justify-between gap-3 text-muted-foreground pointer-events-none">
+                              <span className="label-mono text-foreground/90 truncate max-w-[160px] sm:max-w-[280px]">
                                 {primarySlide.caption}
                               </span>
-                              <span className="font-mono text-[0.65rem] text-primary">
+                              <span className="font-mono text-[0.65rem] text-primary shrink-0 whitespace-nowrap">
                                 Click to expand
                               </span>
                             </div>
