@@ -3,7 +3,8 @@
 import { useRef, useState, type FormEvent } from 'react'
 import Image from 'next/image'
 import { ArrowUpRight, Check, Copy, LoaderCircle } from 'lucide-react'
-import { Reveal, RevealWords } from '@/components/reveal'
+import { Reveal } from '@/components/reveal'
+import { SectionHeading } from '@/components/section-heading'
 import { CONTACT_LIMITS, mailtoFor, parseContactPayload } from '@/lib/contact'
 import { SITE } from '@/lib/site'
 import { cn } from '@/lib/utils'
@@ -319,17 +320,12 @@ export function Contact() {
       />
 
       <div className="relative mx-auto w-full max-w-[92rem] px-5 py-24 sm:px-8 md:py-32 lg:px-12">
-        <Reveal className="flex items-center gap-3.5" distance={12}>
-          <span className="flex size-6 items-center justify-center rounded-sm bg-primary/10 border border-primary/30 font-mono text-xs font-bold text-primary">
-            05
-          </span>
-          <span className="label-mono uppercase tracking-[0.16em] text-muted-foreground">Contact</span>
-        </Reveal>
-
-        <h2 className="text-edge mt-8 max-w-[20ch] font-serif text-[clamp(2.6rem,8.5vw,7rem)] font-normal leading-[1.05]">
-          <RevealWords text="Let’s talk about" />
-          <RevealWords text="your project." delay={180} accentWords={['project']} />
-        </h2>
+        <SectionHeading
+          index="05"
+          label="Contact"
+          title="Let’s talk about your project."
+          accentWords={['project']}
+        />
 
         <p className="mt-8 max-w-xl text-pretty leading-relaxed text-muted-foreground md:text-lg">
           Tell me what you are building and where it is stuck. If I am the right fit I will say so

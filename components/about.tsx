@@ -69,7 +69,7 @@ export function About() {
                   </span>
                   <span className="h-1 w-6 rounded-full bg-primary/20 transition-all duration-300 group-hover:w-10 group-hover:bg-primary" />
                 </div>
-                <h3 className="font-serif text-lg font-normal tracking-tight text-foreground transition-colors group-hover:text-primary">
+                <h3 className="font-serif text-xl font-normal tracking-tight text-foreground transition-colors group-hover:text-primary">
                   {p.title}
                 </h3>
                 <p className="text-sm leading-relaxed text-muted-foreground">{p.body}</p>
