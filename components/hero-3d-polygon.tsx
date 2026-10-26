@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import {
   ChevronLeft,
@@ -118,6 +118,20 @@ export function Hero3DPolygon() {
   }, [activeIndex, goToCard])
 
   const activeProject = PROJECT_CARDS[activeIndex]
+
+  /* keep the active tab visible inside the scrollable tab row (its scrollbar is hidden).
+     Scroll ONLY the pill itself — scrollIntoView would also yank the whole page. */
+  const chipsRef = useRef<Array<HTMLButtonElement | null>>([])
+  const pillRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    const pill = pillRef.current
+    const chip = chipsRef.current[activeIndex]
+    if (!pill || !chip) return
+    pill.scrollTo({
+      left: chip.offsetLeft - (pill.clientWidth - chip.clientWidth) / 2,
+      behavior: 'auto',
+    })
+  }, [activeIndex])
 
   return (
     <div className="relative flex h-full min-h-[500px] sm:min-h-[540px] w-full flex-col items-center justify-center select-none py-2">
@@ -253,7 +267,7 @@ export function Hero3DPolygon() {
       {/* Bottom Navigation with Project Chips & Arrow Controls */}
       <div className="mt-7 flex flex-col items-center gap-3 z-10 w-full max-w-[580px]">
         {/* Project Name Chips & Prev/Next Arrows */}
-        <div className="flex items-center gap-1.5 rounded-full border border-border/80 bg-card/95 p-1 shadow-lg max-w-full overflow-x-auto">
+        <div ref={pillRef} className="flex items-center gap-1.5 rounded-full border border-border/80 bg-card/95 p-1 shadow-lg max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <button
             type="button"
             onClick={prevCard}
@@ -270,6 +284,9 @@ export function Hero3DPolygon() {
                 <button
                   key={p.id}
                   type="button"
+                  ref={(el) => {
+                    chipsRef.current[i] = el
+                  }}
                   onClick={() => goToCard(i)}
                   className={cn(
                     'relative flex h-6.5 items-center gap-1.5 rounded-full px-2.5 font-mono text-[0.65rem] transition-all duration-300 cursor-pointer',

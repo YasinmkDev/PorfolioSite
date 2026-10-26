@@ -102,6 +102,49 @@ export function Hero() {
                 </span>
               </span>
             </h1>
+
+            <p
+              className="mt-8 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground"
+              style={enter(540)}
+            >
+              React Native / React developer building cross-platform mobile apps, business dashboards, and the API
+              layers that hold them together — production code, not prototypes.
+            </p>
+
+            <div
+              className="mt-8 flex flex-wrap items-center gap-3"
+              style={enter(640)}
+            >
+              <a
+                href="#work"
+                data-cursor="See work"
+                className="group relative overflow-hidden rounded-sm bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground"
+              >
+                <span className="absolute inset-0 origin-left scale-x-0 bg-foreground transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-x-100" />
+                <span className="relative flex items-center gap-2 transition-colors duration-500 group-hover:text-background">
+                  Selected work
+                  <ArrowDown className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-y-0.5" />
+                </span>
+              </a>
+              <a
+                href="#contact"
+                data-cursor="Email"
+                className="group flex items-center gap-2 rounded-sm border border-border px-6 py-3.5 text-sm font-medium transition-colors duration-500 hover:border-primary/50 hover:text-primary"
+              >
+                Start a project
+                <ArrowUpRight className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+              <a
+                href={SITE.upwork}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-cursor="Upwork"
+                className="group flex items-center gap-2 rounded-sm border border-border/80 bg-secondary/30 px-5 py-3.5 text-sm font-medium transition-colors duration-500 hover:border-primary/50 hover:text-primary"
+              >
+                Upwork Profile
+                <ArrowUpRight className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+            </div>
           </div>
 
           <div
@@ -109,51 +152,6 @@ export function Hero() {
             style={enter(380)}
           >
             <Hero3DPolygon />
-          </div>
-        </div>
-
-        <div className="mt-10 grid gap-10 md:mt-14 md:grid-cols-12 md:items-end">
-          <p
-            className="max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground md:col-span-6 lg:col-span-5"
-            style={enter(540)}
-          >
-            React Native / React developer building cross-platform mobile apps, business dashboards, and the API
-            layers that hold them together — production code, not prototypes.
-          </p>
-
-          <div
-            className="flex flex-wrap items-center gap-3 md:col-span-6 md:justify-end lg:col-span-7"
-            style={enter(640)}
-          >
-            <a
-              href="#work"
-              data-cursor="See work"
-              className="group relative overflow-hidden rounded-sm bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground"
-            >
-              <span className="absolute inset-0 origin-left scale-x-0 bg-foreground transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-x-100" />
-              <span className="relative flex items-center gap-2 transition-colors duration-500 group-hover:text-background">
-                Selected work
-                <ArrowDown className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-y-0.5" />
-              </span>
-            </a>
-            <a
-              href="#contact"
-              data-cursor="Email"
-              className="group flex items-center gap-2 rounded-sm border border-border px-6 py-3.5 text-sm font-medium transition-colors duration-500 hover:border-primary/50 hover:text-primary"
-            >
-              Start a project
-              <ArrowUpRight className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-            </a>
-            <a
-              href={SITE.upwork}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="Upwork"
-              className="group flex items-center gap-2 rounded-sm border border-border/80 bg-secondary/30 px-5 py-3.5 text-sm font-medium transition-colors duration-500 hover:border-primary/50 hover:text-primary"
-            >
-              Upwork Profile
-              <ArrowUpRight className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-            </a>
           </div>
         </div>
       </div>
