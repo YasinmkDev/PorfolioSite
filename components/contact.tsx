@@ -1,8 +1,9 @@
 'use client'
 
-import { useRef, useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import Image from 'next/image'
 import { ArrowUpRight, Check, Copy, LoaderCircle } from 'lucide-react'
+import { MagneticLink } from '@/components/magnetic'
 import { Reveal } from '@/components/reveal'
 import { SectionHeading } from '@/components/section-heading'
 import { CONTACT_LIMITS, mailtoFor, parseContactPayload } from '@/lib/contact'
@@ -20,47 +21,6 @@ type FieldErrors = Partial<Record<'name' | 'email' | 'brief', string>>
 type Status = 'idle' | 'submitting' | 'success' | 'error'
 
 /** Button that leans toward the cursor, then springs back on exit. */
-function MagneticLink({
-  href,
-  children,
-  className,
-  cursorLabel,
-}: {
-  href: string
-  children: React.ReactNode
-  className?: string
-  cursorLabel?: string
-}) {
-  const ref = useRef<HTMLAnchorElement>(null)
-
-  const onMove = (e: React.PointerEvent<HTMLAnchorElement>) => {
-    const el = ref.current
-    if (!el) return
-    const rect = el.getBoundingClientRect()
-    const x = (e.clientX - (rect.left + rect.width / 2)) * 0.22
-    const y = (e.clientY - (rect.top + rect.height / 2)) * 0.32
-    el.style.transform = `translate3d(${x}px, ${y}px, 0)`
-  }
-
-  const onLeave = () => {
-    const el = ref.current
-    if (el) el.style.transform = 'translate3d(0, 0, 0)'
-  }
-
-  return (
-    <a
-      ref={ref}
-      href={href}
-      data-cursor={cursorLabel}
-      onPointerMove={onMove}
-      onPointerLeave={onLeave}
-      className={cn('transition-transform duration-500 ease-[var(--ease-out-expo)]', className)}
-    >
-      {children}
-    </a>
-  )
-}
-
 function ContactForm() {
   const [status, setStatus] = useState<Status>('idle')
   const [fields, setFields] = useState<FieldErrors>({})

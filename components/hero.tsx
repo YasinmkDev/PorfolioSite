@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { Hero3DPolygon } from '@/components/hero-3d-polygon'
+import { MagneticLink } from '@/components/magnetic'
 import { Marquee } from '@/components/marquee'
 import { TypewriterWord } from '@/components/typewriter-word'
 import { useSiteLoaded } from '@/hooks/use-site-loaded'
@@ -118,9 +119,9 @@ export function Hero() {
               className="mt-8 flex flex-wrap items-center gap-3"
               style={enter(640)}
             >
-              <a
+              <MagneticLink
                 href="#work"
-                data-cursor="See work"
+                cursorLabel="See work"
                 className="group relative overflow-hidden rounded-sm bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground"
               >
                 <span className="absolute inset-0 origin-left scale-x-0 bg-foreground transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-x-100" />
@@ -128,7 +129,7 @@ export function Hero() {
                   Selected work
                   <ArrowDown className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-y-0.5" />
                 </span>
-              </a>
+              </MagneticLink>
               <a
                 href="#contact"
                 data-cursor="Email"

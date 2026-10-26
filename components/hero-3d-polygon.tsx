@@ -10,6 +10,7 @@ import {
   Layers,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Magnetic } from '@/components/magnetic'
 
 interface ProjectCard {
   id: string
@@ -142,6 +143,7 @@ export function Hero3DPolygon() {
       />
 
       {/* Main Big Stacked Card Display Stage */}
+      <Magnetic strengthX={0.06} strengthY={0.08} className="flex w-full items-center justify-center">
       <div
         onClick={nextCard}
         data-cursor="Next Project"
@@ -263,6 +265,7 @@ export function Hero3DPolygon() {
           )
         })}
       </div>
+      </Magnetic>
 
       {/* Bottom Navigation with Project Chips & Arrow Controls */}
       <div className="mt-7 flex flex-col items-center gap-3 z-10 w-full max-w-[580px]">
