@@ -22,7 +22,7 @@ const marquee = [
   'Flutter',
 ]
 
-const TYPEWRITER_WORDS = ['mobile apps', 'web apps', 'dashboards', 'APIs']
+const TYPEWRITER_WORDS = ['mobile apps', 'web apps', 'AI apps', 'AI SaaS', 'dashboards', 'APIs']
 
 function LocalClock() {
   const [time, setTime] = useState<string | null>(null)
