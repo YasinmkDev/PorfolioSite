@@ -197,13 +197,13 @@ export function Hero3DPolygon() {
               </div>
 
               {/* High-Definition Big Screenshot Area */}
-              <div className="relative h-[250px] sm:h-[285px] md:h-[305px] w-full overflow-hidden bg-background">
+              <div className="relative h-[250px] sm:h-[285px] md:h-[305px] w-full overflow-hidden bg-[#121714]">
                 <Image
                   src={project.image}
                   alt={project.imageAlt}
                   fill
                   sizes="(max-width: 768px) 340px, (max-width: 1200px) 540px, 600px"
-                  className="object-cover object-top"
+                  className="object-contain"
                   priority={idx === 0}
                 />
 

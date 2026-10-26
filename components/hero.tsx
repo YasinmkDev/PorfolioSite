@@ -85,7 +85,7 @@ export function Hero() {
               <span className="label-mono">React Native / React Engineer</span>
             </div>
 
-            <h1 className="text-edge max-w-[22ch] font-serif text-[clamp(3.1rem,11.5vw,10.5rem)] font-normal">
+            <h1 className="text-edge max-w-[22ch] font-serif text-[clamp(2.6rem,6.5vw,5.75rem)] font-normal">
               <span className="block overflow-hidden">
                 <span className="block" style={enter(220)}>
                   Mobile apps
@@ -114,7 +114,7 @@ export function Hero() {
 
         <div className="mt-10 grid gap-10 md:mt-14 md:grid-cols-12 md:items-end">
           <p
-            className="max-w-xl text-pretty leading-relaxed text-muted-foreground md:col-span-6 lg:col-span-5"
+            className="max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground md:col-span-6 lg:col-span-5"
             style={enter(540)}
           >
             React Native / React developer building cross-platform mobile apps, business dashboards, and the API
