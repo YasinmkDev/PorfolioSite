@@ -26,64 +26,76 @@ interface ProjectCard {
 
 const PROJECT_CARDS: ProjectCard[] = [
   {
-    id: 'copysprint',
+    id: 'waveform',
     num: '01',
-    title: 'CopySprint',
-    category: 'AI Ad Engine · Web App',
-    tagline: '1-to-5 native ad synthesis with Google RSA scoring & 1-click batch export.',
-    stack: ['Next.js', 'React', 'AI Pipeline', 'TypeScript'],
-    image: '/projects/AdsGenerationWebApp/screen1.png',
-    imageAlt: 'CopySprint AI Advertising Engine',
-    tag: 'AI Web SaaS',
+    title: 'Waveform',
+    category: 'Music Player · Mobile',
+    tagline: 'A Spotify-style player with a real playback engine, queue and honest premium gates.',
+    stack: ['React Native', 'Expo', 'Zustand', 'Reanimated'],
+    image: '/projects/waveform/home.png',
+    imageAlt: 'Waveform music player home screen',
+    tag: 'Music App',
     baseAngle: -3.2,
   },
   {
-    id: 'fastbill',
+    id: 'findit',
     num: '02',
-    title: 'FastBill',
-    category: 'Invoicing Micro-SaaS',
-    tagline: '10-second invoicing with natural-language parsing & 300 DPI vector PDF.',
-    stack: ['Next.js 14', 'Supabase RLS', 'Stripe QR', 'TypeScript'],
-    image: '/projects/invoiceGeneratorwebApp/screen3.png',
-    imageAlt: 'FastBill Invoicing Micro-SaaS Studio',
-    tag: 'Fintech SaaS',
+    title: 'FindIt',
+    category: 'AI Item Finder · Mobile',
+    tagline: 'Photo → Gemini analysis → search your things by words. The scan queue never loses a photo.',
+    stack: ['React Native', 'Expo', 'Gemini API', 'TypeScript'],
+    image: '/projects/findit/home.png',
+    imageAlt: 'FindIt home screen in light theme',
+    tag: 'AI Mobile',
     baseAngle: 2.8,
   },
   {
-    id: 'ledger-ai',
+    id: 'fittrack',
     num: '03',
-    title: 'Ledger AI',
-    category: 'AI Financial App · Mobile',
-    tagline: 'Offline-first expense engine with camera OCR & live budget limits.',
-    stack: ['React Native', 'Expo', 'Gemini AI Vision', 'TypeScript'],
-    image: '/projects/ledgerProject/first_image_withScreenShotsAndTextOnRight.png',
-    imageAlt: 'Ledger AI Mobile Receipt & Expense App Flow',
-    tag: 'AI Mobile',
+    title: 'FitTrack',
+    category: 'Gym OS · Mobile',
+    tagline: 'Owner workflow modelled on real gym software, with fluid navigation and demo auth.',
+    stack: ['React Native', 'Expo', 'Reanimated', 'TypeScript'],
+    image: '/projects/fittrack/hub.png',
+    imageAlt: 'FitTrack hub screen',
+    tag: 'Gym SaaS',
     baseAngle: -2.1,
   },
   {
-    id: 'reserve-ease',
+    id: 'mobilebazaar',
     num: '04',
-    title: 'ReserveEase',
-    category: 'Studio Booking Platform',
-    tagline: 'Dual customer & provider portals with real-time schedule conflict resolution.',
-    stack: ['React Native', 'Expo', 'Supabase', 'Zustand'],
-    image: '/projects/bookingProject/first_image_app_screeshots_and_text_on_right_side.png',
-    imageAlt: 'ReserveEase Appointment & Schedule App Flow',
-    tag: 'Full-Stack',
+    title: 'MobileBazaar',
+    category: 'Phone Store · Web',
+    tagline: 'Pakistan-market commerce: guest checkout, COD and JazzCash/EasyPaisa, live Supabase catalogue.',
+    stack: ['Next.js 15', 'Supabase', 'TypeScript'],
+    image: '/projects/mobilebazaar/home-desktop.png',
+    imageAlt: 'MobileBazaar storefront home page',
+    tag: 'E-Commerce',
     baseAngle: 2.2,
   },
   {
-    id: 'marlows-pos',
+    id: 'swift-courier',
     num: '05',
-    title: "Marlow's POS",
-    category: 'In-Venue Dining & POS',
-    tagline: 'QR table ordering, dynamic split-bill settlement & live kitchen KDS.',
-    stack: ['React Native', 'Expo', 'POS Engine', 'Context API'],
-    image: '/projects/orderProject/firstImageToshowInProjectSection.png',
-    imageAlt: "Marlow's Dining Platform & Restaurant POS",
-    tag: 'POS Dining',
+    title: 'Swift Courier',
+    category: 'Delivery Marketplace · Mobile',
+    tagline: 'Food, grocery and package delivery with live courier tracking.',
+    stack: ['React Native', 'Expo', 'Zustand', 'MapLibre'],
+    image: '/projects/swift-courier/home.png',
+    imageAlt: 'Swift Courier home screen in light theme',
+    tag: 'Marketplace',
     baseAngle: -2.4,
+  },
+  {
+    id: 'hospitality',
+    num: '06',
+    title: 'Hospitality',
+    category: 'Hotel Admin · Web',
+    tagline: 'Twenty routes, one system: bookings, rooms, rates and a demo sandbox fallback.',
+    stack: ['React', 'TypeScript', 'Tailwind CSS'],
+    image: '/projects/hospitality/dashboard-desktop.png',
+    imageAlt: 'Hospitality admin dashboard',
+    tag: 'Admin SaaS',
+    baseAngle: 2.6,
   },
 ]
 
@@ -119,7 +131,7 @@ export function Hero3DPolygon() {
       <div
         onClick={nextCard}
         data-cursor="Next Project"
-        className="group/deck relative flex items-center justify-center w-full max-w-[340px] sm:max-w-[480px] md:max-w-[540px] lg:max-w-[580px] h-[420px] sm:h-[460px] cursor-pointer"
+        className="group/deck relative flex items-center justify-center w-full max-w-[340px] sm:max-w-[480px] md:max-w-[540px] lg:max-w-[580px] h-[430px] sm:h-[490px] cursor-pointer"
       >
         {PROJECT_CARDS.map((project, idx) => {
           // Calculate relative position from active card
@@ -241,17 +253,17 @@ export function Hero3DPolygon() {
       {/* Bottom Navigation with Project Chips & Arrow Controls */}
       <div className="mt-7 flex flex-col items-center gap-3 z-10 w-full max-w-[580px]">
         {/* Project Name Chips & Prev/Next Arrows */}
-        <div className="flex items-center gap-1.5 rounded-full border border-border/80 bg-card/95 p-1 shadow-lg">
+        <div className="flex items-center gap-1.5 rounded-full border border-border/80 bg-card/95 p-1 shadow-lg max-w-full overflow-x-auto">
           <button
             type="button"
             onClick={prevCard}
             aria-label="Previous project"
-            className="flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground active:scale-95 cursor-pointer"
+            className="flex size-7 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground active:scale-95 cursor-pointer"
           >
             <ChevronLeft className="size-3.5" />
           </button>
 
-          <div className="flex items-center gap-1 px-1">
+          <div className="flex w-max items-center gap-1 px-1">
             {PROJECT_CARDS.map((p, i) => {
               const isCurrent = activeIndex === i
               return (
@@ -277,7 +289,7 @@ export function Hero3DPolygon() {
             type="button"
             onClick={nextCard}
             aria-label="Next project"
-            className="flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground active:scale-95 cursor-pointer"
+            className="flex size-7 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground active:scale-95 cursor-pointer"
           >
             <ChevronRight className="size-3.5" />
           </button>

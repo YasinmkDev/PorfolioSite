@@ -74,8 +74,8 @@ export function Hero() {
       </div>
 
       <div className="relative mx-auto flex w-full max-w-[92rem] flex-1 flex-col justify-center px-5 pb-10 pt-16 sm:px-8 lg:px-12">
-        <div className="grid items-center gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(16rem,0.95fr)] lg:gap-8">
-          <div>
+        <div className="grid grid-cols-[minmax(0,1fr)] items-center gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(16rem,0.95fr)] lg:gap-8">
+          <div className="min-w-0">
             <div
               className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-2"
               style={enter(120)}
@@ -88,7 +88,7 @@ export function Hero() {
             <h1 className="text-edge max-w-[22ch] font-serif text-[clamp(3.1rem,11.5vw,10.5rem)] font-normal">
               <span className="block overflow-hidden">
                 <span className="block" style={enter(220)}>
-                  Interfaces
+                  Mobile apps
                 </span>
               </span>
               <span className="block overflow-hidden">
@@ -117,9 +117,8 @@ export function Hero() {
             className="max-w-xl text-pretty leading-relaxed text-muted-foreground md:col-span-6 lg:col-span-5"
             style={enter(540)}
           >
-            Recently graduated Software Engineering professional and working React Native / React developer. I build
-            cross-platform mobile apps, business dashboards, and the API layers that hold them
-            together — production code, not prototypes.
+            React Native / React developer building cross-platform mobile apps, business dashboards, and the API
+            layers that hold them together — production code, not prototypes.
           </p>
 
           <div
