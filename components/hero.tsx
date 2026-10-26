@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { Hero3DPolygon } from '@/components/hero-3d-polygon'
 import { Marquee } from '@/components/marquee'
+import { TypewriterWord } from '@/components/typewriter-word'
 import { useSiteLoaded } from '@/hooks/use-site-loaded'
 import { SITE } from '@/lib/site'
 
@@ -20,6 +21,8 @@ const marquee = [
   'NativeWind',
   'Flutter',
 ]
+
+const TYPEWRITER_WORDS = ['mobile apps', 'web apps', 'dashboards', 'APIs']
 
 function LocalClock() {
   const [time, setTime] = useState<string | null>(null)
@@ -88,17 +91,17 @@ export function Hero() {
             <h1 className="text-edge max-w-[22ch] font-serif text-[clamp(2.6rem,6.5vw,5.75rem)] font-normal">
               <span className="block overflow-hidden">
                 <span className="block" style={enter(220)}>
-                  Mobile apps
+                  Building
                 </span>
               </span>
               <span className="block overflow-hidden">
-                <span className="block italic text-primary" style={enter(320)}>
-                  engineered
+                <span className="block" style={enter(320)}>
+                  <TypewriterWord words={TYPEWRITER_WORDS} className="italic text-primary" />
                 </span>
               </span>
               <span className="block overflow-hidden">
                 <span className="block" style={enter(420)}>
-                  to ship.
+                  that ship.
                 </span>
               </span>
             </h1>
